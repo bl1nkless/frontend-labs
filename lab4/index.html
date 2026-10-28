@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Навчальний промосайт корпорації ОБРІЙ. Лабораторна робота 4, варіант 6.">
+    <title>ОБРІЙ — Головна</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora&family=Montserrat:wght@400;600;700&display=swap">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+    <!-- Внутрішня таблиця стилів: лише для головної сторінки. -->
+    <style>
+        body { position: relative; padding-top: 10rem; }
+        header h1 { font-weight: 400; }
+        header p { margin-left: calc(60px + 1rem); }
+        .news { min-height: 1.6em; font: 600 1.1rem Montserrat, Arial, sans-serif; color: red; }
+        header { position: absolute; top: 0; }
+        nav { position: sticky; top: 0; z-index: 5; padding: .5rem 0; background: #f7f5f2; }
+
+        main {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            grid-template-areas: "links links" "about aside" "founders founders";
+            gap: 1.5rem;
+        }
+        main > p { grid-area: links; margin: 0; }
+
+        #about {
+            grid-area: about;
+            margin: 1rem 0;
+            padding: 0;
+            max-height: 24rem;
+            overflow-y: scroll;
+        }
+        #about::-webkit-scrollbar { width: 8px; background: #eee; }
+        #about::-webkit-scrollbar-thumb { background: darkorange; border-radius: 4px; }
+        @supports not selector(::-webkit-scrollbar) {
+            #about { scrollbar-width: thin; scrollbar-color: darkorange #eee; }
+        }
+        #about .goal::first-letter { font-size: 2em; color: darkorange; }
+        #about .goal::after {
+            content: "👨‍💼 Директор Коваль О. М.: «Ми будуємо міста, у яких хочеться жити!»";
+            display: block;
+            margin-top: .5rem;
+            font-style: italic;
+        }
+        ol[type="I"] li::marker { color: darkorange; font-weight: bold; }
+        ol li:nth-child(odd) { background: #efe9e1; }
+
+        aside { grid-area: aside; display: inline-block; }
+        a[href*="gov.ua"]::after { content: " ↗"; }
+
+        #founders {
+            grid-area: founders;
+            position: relative;
+            z-index: 1;
+            overflow-x: auto;
+            transition: transform .4s;
+        }
+        #founders:hover { transform: scale(1.05); }
+        table { width: 100%; border-collapse: collapse; background: white; }
+        th, td { padding: .5rem; border: 1px solid #ccc; }
+        thead, tfoot { background: #1f2a36; color: white; }
+        tbody th { background: #fbeee0; }
+
+        address { transition: text-shadow .3s; }
+        address:hover { text-shadow: 2px 2px 3px rgba(255, 140, 0, .8); transition-delay: 2s; }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="../assets/logo.svg" alt="Логотип корпорації ОБРІЙ" width="60" height="60">
+        <h1>Корпорація «ОБРІЙ»</h1>
+        <p id="news" class="news" aria-live="polite"></p>
+        <p>Інженерні рішення для розвитку міст</p>
+    </header>
+
+    <nav aria-label="Основна навігація">
+        <a href="index.html" aria-current="page">Головна</a>
+        <a href="activities.html">Напрями діяльності</a>
+        <a href="feedback.html">Зворотній зв’язок</a>
+    </nav>
+
+    <main>
+        <p><a href="#about">Про корпорацію</a> | <a href="#founders">Засновники</a></p>
+        <article id="about" title="Мета та завдання корпорації">
+            <h2>Мета створення корпорації</h2>
+            <p class="goal">Корпорацію «ОБРІЙ» створено для об’єднання інженерів, які розробляють рішення в енергетиці, промисловості та міській інфраструктурі.</p>
+            <p><span>Наша мета — <b>розвивати міста</b>, поєднуючи <i>інженерний досвід</i>, <em>відповідальність</em> та <u>якість роботи</u>.</span></p>
+            <h3>Основні завдання</h3>
+            <ol type="I">
+                <li>Розробляти енергоощадні рішення для підприємств.</li>
+                <li>Модернізувати промислове обладнання.</li>
+                <li>Брати участь у розвитку міської інфраструктури.</li>
+                <li>Впроваджувати цифрові системи керування містом.</li>
+            </ol>
+        </article>
+
+        <aside>
+            <h2>Корисні ресурси</h2>
+            <ul>
+                <li><a href="https://www.kmu.gov.ua/" target="_blank" rel="noopener noreferrer">Урядовий портал</a></li>
+                <li><a href="https://www.rada.gov.ua/" target="_blank" rel="noopener noreferrer">Верховна Рада України</a></li>
+            </ul>
+        </aside>
+
+        <section id="founders">
+            <h2>Засновники корпорації</h2>
+            <table>
+                <caption>Освіта, досвід та обов’язки засновників</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Прізвище</th>
+                        <th scope="col">Ініціали</th>
+                        <th scope="col">Посада</th>
+                        <th scope="col">Досвід</th>
+                        <th scope="col">Освіта</th>
+                        <th scope="col">Обов’язки</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th rowspan="2" colspan="2" scope="rowgroup">Коваль О. М.</th>
+                        <td rowspan="2">Директор</td>
+                        <td rowspan="2">12 років</td>
+                        <td rowspan="2">Вища, менеджмент</td>
+                        <td>Стратегія розвитку</td>
+                    </tr>
+                    <tr><td>Співпраця з партнерами</td></tr>
+                    <tr>
+                        <th rowspan="2" colspan="2" scope="rowgroup">Мельник І. П.</th>
+                        <td rowspan="2">Технічний директор</td>
+                        <td rowspan="2">10 років</td>
+                        <td rowspan="2">Вища, електроенергетика</td>
+                        <td>Енергетичні проєкти</td>
+                    </tr>
+                    <tr><td>Контроль технічних рішень</td></tr>
+                    <tr>
+                        <th rowspan="2" colspan="2" scope="rowgroup">Бондар Н. В.</th>
+                        <td rowspan="2">Керівниця проєктів</td>
+                        <td rowspan="2">8 років</td>
+                        <td rowspan="2">Вища, будівництво</td>
+                        <td>Міська інфраструктура</td>
+                    </tr>
+                    <tr><td>Організація роботи команди</td></tr>
+                </tbody>
+                <tfoot>
+                    <tr><td colspan="6">Корпорацію заснували три фахівці з різних галузей.</td></tr>
+                </tfoot>
+            </table>
+        </section>
+    </main>
+
+    <footer>
+        <h2>Контакти</h2>
+        <address>
+            м. Київ, вул. Інженерна, 10<br>
+            Телефон: <a href="tel:+380440000000">+380 (44) 000-00-00</a><br>
+            E-mail: <a href="mailto:info@obriy.example">info@obriy.example</a>
+        </address>
+    </footer>
+</body>
+</html>

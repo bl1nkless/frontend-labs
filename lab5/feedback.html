@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Форма зворотного зв’язку корпорації ОБРІЙ.">
+    <title>ОБРІЙ — Зворотній зв’язок</title>
+    <link rel="icon" href="../assets/logo.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora&family=Montserrat:wght@400;600;700&display=swap">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+    <style>
+        form {
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+            align-content: flex-start;
+            gap: 1rem;
+        }
+        header { margin: -1rem -1rem 1rem; }
+        fieldset { flex: 1 1 18rem; min-width: 0; border: 2px solid #1f2a36; }
+        fieldset p { display: flex; flex-direction: column; margin: .5rem 0; }
+        .side { flex: 2 1 26rem; display: flex; flex-direction: column; gap: .5rem; }
+        .consent { order: 3; flex-basis: 100%; }
+        .buttons { order: 4; align-self: flex-end; flex-shrink: 0; margin-left: auto; display: flex; gap: .5rem; }
+        input, select, textarea, button { font: inherit; padding: .4rem; }
+        textarea { width: 25rem; max-width: 100%; height: 9.375rem; resize: none; }
+        .detail-row { display: flex; align-items: center; gap: 1rem; }
+        textarea { transition: background-color .3s, box-shadow .3s; }
+        textarea.hovered { background: #fff4e5; border: 2px solid darkorange; box-shadow: 0 0 12px rgba(255, 140, 0, .6); }
+        .tip { max-width: 12rem; padding: .5rem .7rem; border-radius: 6px; background: #1f2a36; color: white; font-size: .85rem; }
+        button { border: 0; background: #1f2a36; color: white; cursor: pointer; }
+        button[type="reset"] { background: hsl(0, 0%, 40%); }
+        input:invalid:not(:placeholder-shown) { border-color: crimson; }
+        @media (max-width: 768px) {
+            form { flex-flow: column nowrap; align-items: stretch; }
+            fieldset, .side { flex-basis: auto; }
+            .detail-row { flex-wrap: wrap; }
+            .buttons { align-self: stretch; margin-left: 0; }
+            .buttons button { flex: 1; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="../assets/logo.svg" alt="Логотип корпорації ОБРІЙ" width="60" height="60">
+        <h1>Корпорація «ОБРІЙ»</h1>
+        <p>Зворотній зв’язок</p>
+    </header>
+    <nav aria-label="Основна навігація">
+        <a href="index.html">Головна</a>
+        <a href="activities.html">Напрями діяльності</a>
+        <a href="feedback.html" aria-current="page">Зворотній зв’язок</a>
+    </nav>
+    <main>
+        <h2>Зворотній зв’язок</h2>
+        <form>
+            <fieldset>
+                <legend>Персональна інформація</legend>
+                <p><label for="full-name">Прізвище та ім’я</label>
+                    <input type="text" id="full-name" name="full_name" autocomplete="name" maxlength="100" placeholder=" " required></p>
+                <p><label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" autocomplete="email" placeholder=" " required></p>
+                <p><label for="age">Вік</label>
+                    <input type="number" id="age" name="age" min="1" max="120" placeholder=" " required></p>
+                <p><label for="education">Освіта</label>
+                    <select id="education" name="education" required>
+                        <option value="">Оберіть освіту</option>
+                        <option value="complete">Повна</option>
+                        <option value="incomplete">Неповна</option>
+                        <option value="higher">Вища</option>
+                        <option value="professional">Професійна</option>
+                    </select></p>
+            </fieldset>
+            <div class="side">
+                <label for="purpose">Мета зворотнього зв’язку</label>
+                <select id="purpose" name="purpose" required>
+                    <option value="">Оберіть мету</option>
+                    <option value="cooperation">Співпраця</option>
+                    <option value="complaint">Скарга на порушення права власності</option>
+                    <option value="suggestion">Пропозиція</option>
+                    <option value="error">Наявність помилки</option>
+                </select>
+                <label for="details">Детально (до 1000 символів)</label>
+                <div class="detail-row">
+                    <textarea id="details" name="details" maxlength="1000" required onmouseover="showTip()" onmouseout="hideTip()"></textarea>
+                </div>
+            </div>
+            <label class="consent"><input type="checkbox" name="consent" required> Даю згоду на обробку інформації</label>
+            <div class="buttons">
+                <button type="reset">Очистити</button>
+                <button type="submit">Відправити</button>
+            </div>
+        </form>
+    </main>
+    <footer><p>Навчальний сайт корпорації «ОБРІЙ».</p></footer>
+</body>
+</html>

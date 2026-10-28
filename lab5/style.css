@@ -1,0 +1,57 @@
+/* Зовнішня таблиця стилів: спільне для всіх сторінок. Стиль — мінімалізм. */
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+body {
+    margin: 0;
+    padding: 1rem;
+    font: 1rem/1.6 'Lora', Georgia, serif;
+    color: #222;
+    background: #f7f5f2;
+}
+
+h1, h2, h3, nav, button, legend { font-family: 'Montserrat', Arial, sans-serif; }
+h2 { color: hsl(24, 70%, 35%); }
+
+header {
+    left: 0;
+    right: 0;
+    z-index: 10;
+    padding: .75rem 1rem;
+    background: linear-gradient(90deg, #1f2a36, rgb(52, 73, 94));
+    color: white;
+}
+header img { float: left; margin-right: 1rem; }
+header h1 { margin: 0; }
+header p { margin: 0; }
+
+nav { display: flex; gap: .5rem; flex-wrap: wrap; }
+nav a {
+    padding: .4rem .9rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #1f2a36;
+    text-decoration: none;
+    transition: background-color .3s, color .3s, box-shadow .3s, border-color .3s;
+}
+nav a:hover { background-color: #1f2a36; color: white; border-color: #1f2a36; box-shadow: 0 4px 10px rgba(0, 0, 0, .25); }
+nav a[aria-current] { font-weight: bold; }
+
+nav, main, footer { max-width: 60rem; margin: 0 auto 1rem; }
+footer { padding: 1rem 0; border-top: 1px solid #ccc; }
+img { max-width: 100%; height: auto; }
+button { -webkit-appearance: none; -moz-appearance: none; appearance: none; -webkit-user-select: none; user-select: none; }
+::selection { background: darkorange; color: white; }
+
+/* Адаптивність: телефони */
+@media (max-width: 480px) {
+    body { padding: .5rem; }
+    header { padding: .5rem; }
+    header img { width: 2.5rem; height: 2.5rem; }
+    header h1 { font-size: 1.3rem; }
+    nav a { flex: 1 1 auto; text-align: center; }
+}
+/* Широкі екрани */
+@media (min-width: 1440px) {
+    nav, main, footer { max-width: 75rem; }
+}
