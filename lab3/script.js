@@ -1,7 +1,7 @@
 // ЛР 3, варіант 6. Результати виводяться на сторінку і в консоль.
 function print(title, lines) {
     const text = [].concat(lines).join('\n');
-    document.body.insertAdjacentHTML('beforeend', `<h2>${title}</h2><pre>${text}</pre>`);
+    document.body.insertAdjacentHTML('beforeend', `<section><h2>${title}</h2><pre>${text}</pre></section>`);
     console.log(`${title}\n${text}`);
 }
 
@@ -127,5 +127,5 @@ print('Явне та неявне перетворення', [
     `Number('12') + 1 = ${Number('12') + 1}`, `parseInt('18 міс.') = ${parseInt('18 міс.')}`,
     `String(2026) + 1 = ${String(2026) + 1}`, `Boolean('') = ${Boolean('')}`,
     `'5' * 2 = ${'5' * 2}`, `'5' + 2 = ${'5' + 2}`, `1 == '1' → ${1 == '1'}, 1 === '1' → ${1 === '1'}`,
-    `Math.max(...reads2) = ${Math.max(...directions.map(d => d.reads2 ?? 0))}`,
+    `Math.max(...reads2) = ${Math.max(...directions.map(d => d.reads2 ?? 0))}, Math.min(...reads1) = ${Math.min(...directions.map(d => d.reads1))}`,
 ]);
