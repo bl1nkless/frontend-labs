@@ -46,9 +46,8 @@
         .flip { height: 13rem; perspective: 60rem; }
         .flip-inner { position: relative; height: 100%; transition: transform .6s; -webkit-transform-style: preserve-3d; transform-style: preserve-3d; }
         .flipped .flip-inner { transform: rotateY(180deg); }
-        .flip img, .flip .back { position: absolute; top: 0; right: 0; bottom: 0; left: 0; -webkit-backface-visibility: hidden; backface-visibility: hidden; }
+        .flip img, .flip .back { position: absolute; top: 0; right: 0; bottom: 0; left: 0; -webkit-backface-visibility: hidden; backface-visibility: hidden; transition: visibility 0s .3s; }
         /* Резерв для WebKit, де backface-visibility не спрацював: сторони перемикаються на середині повороту */
-        .flip img, .flip .back { transition: visibility 0s .3s; }
         .flip .back, .flipped img { visibility: hidden; }
         .flipped .back { visibility: visible; }
         .flip .back { margin: 0; padding: .8rem 1rem .8rem 2rem; overflow: auto; transform: rotateY(180deg); background: #1f2a36; color: white; font-size: .85rem; }
