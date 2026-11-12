@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Суфлер захисту ЛР №5 — Варіант 6 (ОБРІЙ)</title>
+    <style>
+        :root {
+            --bg: #0f172a; --surface: #1e293b; --surface-2: #263348; --border: #334155;
+            --text: #f1f5f9; --muted: #94a3b8; --say-bg: #0d2a24; --say-border: #10b981;
+            --act-bg: #2a2110; --act-border: #f59e0b; --code-bg: #0b1120; --accent: #38bdf8;
+            --font-size: 18px;
+        }
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); font-size: var(--font-size); line-height: 1.55; padding-bottom: 64px; }
+        .topbar { position: sticky; top: 0; z-index: 50; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); padding: 10px 16px; }
+        .topbar-inner { max-width: 920px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
+        .title-group h1 { margin: 0; font-size: 1rem; font-weight: 700; }
+        .title-group .sub { font-size: 0.78rem; color: var(--muted); }
+        .lab-switch { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+        .lab-switch a { text-decoration: none; font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 6px; border: 1px solid var(--border); color: var(--muted); background: var(--surface); }
+        .lab-switch a.active { background: var(--accent); color: #0f172a; border-color: var(--accent); }
+        .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+        .btn { background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; font-size: 0.85rem; cursor: pointer; font-weight: 600; }
+        .btn:hover { border-color: var(--accent); }
+        .btn-accent { background: #0369a1; border-color: #0284c7; }
+        .timer { font-variant-numeric: tabular-nums; font-weight: 700; font-size: 0.95rem; padding: 5px 10px; border-radius: 8px; background: var(--surface-2); border: 1px solid var(--border); }
+        .timer.warn { color: #fbbf24; border-color: #f59e0b; }
+        .progress-wrap { max-width: 920px; margin: 8px auto 0; display: flex; align-items: center; gap: 10px; font-size: 0.78rem; color: var(--muted); }
+        .progress-bar { flex: 1; height: 6px; background: var(--surface); border-radius: 999px; overflow: hidden; }
+        .progress-fill { height: 100%; width: 0%; background: var(--say-border); transition: width 0.2s ease; }
+        .nav-pills { max-width: 920px; margin: 12px auto 0; padding: 0 16px; display: flex; flex-wrap: wrap; gap: 6px; }
+        .nav-pills a { color: var(--accent); text-decoration: none; font-size: 0.82rem; background: var(--surface); border: 1px solid var(--border); padding: 4px 10px; border-radius: 999px; }
+        main { max-width: 920px; margin: 16px auto 0; padding: 0 16px; }
+        .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 18px; margin-bottom: 18px; }
+        .card.done { opacity: 0.52; }
+        .card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        .card-head h2 { margin: 0; font-size: 1.12rem; color: #fff; }
+        .req-tag { display: inline-block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--accent); margin-bottom: 4px; }
+        .check-label { display: flex; align-items: center; gap: 6px; font-size: 0.82rem; color: var(--muted); cursor: pointer; user-select: none; white-space: nowrap; }
+        .check-label input { width: 18px; height: 18px; accent-color: var(--say-border); cursor: pointer; }
+        .act { background: var(--act-bg); border-left: 4px solid var(--act-border); border-radius: 8px; padding: 10px 14px; margin: 10px 0; font-size: 0.92rem; color: #fde68a; }
+        .act strong { color: #fbbf24; }
+        .say { background: var(--say-bg); border-left: 4px solid var(--say-border); border-radius: 8px; padding: 12px 14px; margin: 10px 0; }
+        .say-label { display: inline-block; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: #34d399; margin-bottom: 4px; }
+        .say p { margin: 6px 0; }
+        .slash { color: #34d399; font-weight: 800; padding: 0 3px; }
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background: rgba(15, 23, 42, 0.75); color: #7dd3fc; padding: 1px 6px; border-radius: 5px; font-size: 0.88em; border: 1px solid #334155; }
+        pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px; overflow-x: auto; font-size: 0.86rem; margin: 8px 0; color: #e2e8f0; }
+        .code-wrap { position: relative; }
+        .copy-btn { position: absolute; top: 8px; right: 8px; background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 3px 8px; font-size: 0.75rem; cursor: pointer; }
+        ul.prep { margin: 8px 0; padding-left: 20px; }
+        ul.prep li { margin: 6px 0; }
+        .section-divider { margin: 28px 0 12px; padding-left: 10px; border-left: 4px solid var(--accent); font-size: 1.25rem; font-weight: 800; color: #fff; }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <div class="topbar-inner">
+            <div class="title-group">
+                <h1>Суфлер захисту ЛР №5 — Варіант 6 («ОБРІЙ»)</h1>
+                <div class="sub">Загорський Тарас, ІПЗ-31 (3 підгрупа) • Адаптивність, кросбраузерність, метрики</div>
+                <div class="lab-switch">
+                    <a href="../lab1/defense.html">ЛР 1</a>
+                    <a href="../lab2/defense.html">ЛР 2</a>
+                    <a href="../lab3/defense.html">ЛР 3</a>
+                    <a href="../lab4/defense.html">ЛР 4</a>
+                    <a href="../lab5/defense.html" class="active">ЛР 5</a>
+                </div>
+            </div>
+            <div class="controls">
+                <button class="btn" onclick="changeFont(-2)">A-</button>
+                <button class="btn" onclick="changeFont(2)">A+</button>
+                <span id="timer" class="timer">00:00 / 20:00</span>
+                <button id="timer-btn" class="btn btn-accent" onclick="toggleTimer()">Старт</button>
+                <button class="btn" onclick="resetTimer()">Скинути</button>
+                <button class="btn" onclick="resetProgress()">Очистити галочки</button>
+            </div>
+        </div>
+        <div class="progress-wrap">
+            <span id="progress-text">Пройдено 0 з 9 кроків</span>
+            <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
+        </div>
+    </header>
+
+    <nav class="nav-pills">
+        <a href="#prep">0. Підготовка</a>
+        <a href="#sec-4-1">4.1 Вступ</a>
+        <a href="#sec-4-2">4.2 Адаптивність, Кросбраузерність, Lighthouse</a>
+        <a href="#sec-4-3">4.3–4.6 Теорія</a>
+    </nav>
+
+    <main>
+        <section id="prep" class="card" data-step="prep">
+            <div class="card-head">
+                <div>
+                    <span class="req-tag">Вимоги до відеозапису (п. 1–3)</span>
+                    <h2>0. Підготовка ДО натискання «Запис»</h2>
+                </div>
+                <label class="check-label"><input type="checkbox" class="step-check"> Готово</label>
+            </div>
+            <ul class="prep">
+                <li><strong>Обов’язково запусти локальний сервер</strong> у терміналі в папці <code>FRONT</code> (щоб Lighthouse працював і одразу бачив правки коду):
+                    <div class="code-wrap">
+                        <button class="copy-btn" onclick="copyCode(this)">Копіювати</button>
+                        <pre>python3 -m http.server 8000</pre>
+                    </div>
+                </li>
+                <li>У Chrome відкрий <code>http://localhost:8000/lab5/index.html</code> (та май відкритий Chrome DevTools: режим емуляції пристроїв + вкладку <strong>Lighthouse</strong>).</li>
+                <li>У VS Code відкрий 4 файли з папки <code>lab5</code>: <code>style.css</code>, <code>index.html</code>, <code>activities.html</code>, <code>feedback.html</code> (збільш шрифт <code>Cmd + +</code>).</li>
+                <li>За бажанням відкрий у <strong>Safari</strong> сторінку <code>http://localhost:8000/lab5/activities.html</code> (щоб миттєво показати фікс фліп-картки у WebKit).</li>
+                <li>Увімкни вебкамеру (обличчя в кадрі весь запис, до 20 хв).</li>
+            </ul>
+        </section>
+
+        <div id="sec-4-1" class="section-divider">4.1. Представлення студента</div>
+
+        <section class="card" data-step="s41">
+            <div class="card-head">
+                <div>
+                    <span class="req-tag">Пункт 4.1</span>
+                    <h2>Представлення: ПІБ, група, підгрупа, номер роботи, варіант</h2>
+                </div>
+                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> Дивишся в камеру, на екрані Chrome із <code>http://localhost:8000/lab5/index.html</code>. Друг тисне «Старт».
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо</span>
+                <p>Доброго дня. <span class="slash">/</span> Мене звати Тарас Загорський, <span class="slash">/</span> група ІПЗ-31, <span class="slash">/</span> третя підгрупа. <span class="slash">/</span> Захищаю лабораторну роботу номер п’ять, <span class="slash">/</span> варіант шостий — <span class="slash">/</span> адаптивність, кросбраузерність та метрики ефективності фронтенду.</p>
+            </div>
+        </section>
+
+        <div id="sec-4-2" class="section-divider">4.2. Результати, зміни коду та заміри метрик</div>
+
+        <section class="card" data-step="s42-1">
+            <div class="card-head">
+                <div>
+                    <span class="req-tag">Пункт 4.2.1</span>
+                    <h2>Демонстрація адаптивності та кросбраузерності у браузері</h2>
+                </div>
+                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> У Chrome DevTools увімкни Device Toolbar (іконка телефону/планшета). Проклікай ширини <code>320</code> px, <code>768</code> px і <code>1440</code> px на трьох сторінках: <code>index.html</code> (покажи прокрутку таблиці всередині блоку), <code>activities.html</code> (1, 2 і 3 колонки карток), <code>feedback.html</code> (форма в одну і дві колонки). Потім покажи <code>activities.html</code> у Safari (або розкажи про фікс WebKit).
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо</span>
+                <p>Спочатку продемонструю результати адаптивності в режимі емуляції пристроїв DevTools. <span class="slash">/</span> Перевіримо стандартні ширини від 320 до 1440 пікселів.</p>
+                <p>На головній сторінці при ширині 320 і 768 пікселів сітка перебудовується в одну колонку, <span class="slash">/</span> меню розтягується на ширину екрана для зручного натискання, <span class="slash">/</span> а таблиця засновників прокручується горизонтально всередині свого контейнера без переповнення сторінки.</p>
+                <p>На сторінці «Напрями діяльності» картки автоматично змінюють кількість колонок: <span class="slash">/</span> одна на телефоні, дві на планшеті й три на десктопі. <span class="slash">/</span> На сторінці «Зворотній зв’язок» на вузькому екрані форма складається в одну вертикальну колонку, а кнопки займають всю ширину.</p>
+                <p>Щодо кросбраузерності: <span class="slash">/</span> сайт перевірено у Chromium та WebKit Safari — фліп-картки в обох рушіях перевертаються коректно без дзеркального просвічування звороту.</p>
+            </div>
+        </section>
+
+        <section class="card" data-step="s42-2">
+            <div class="card-head">
+                <div>
+                    <span class="req-tag">Пункт 4.2.2</span>
+                    <h2>Внесені у код зміни для адаптивності</h2>
+                </div>
+                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> У VS Code по черзі показуй: <code>lab5/style.css</code> (рядки 47–57), <code>lab5/index.html</code> (рядки 65, 71–81), <code>lab5/activities.html</code> (рядки 59–62, 83, 98, 113) та <code>lab5/feedback.html</code> (рядки 25, 31, 38–47).
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо</span>
+                <p>Прокоментую зміни в коді для адаптивності. <span class="slash">/</span> У файлі <code>style.css</code> на рядках сорок сім–п’ятдесят три додано медіазапит <code>@media (max-width: 480px)</code>: <span class="slash">/</span> зменшено відступи, розмір логотипа до <code>2.5rem</code>, розмір заголовка та розтягнуто посилання меню через <code>flex: 1 1 auto</code>. <span class="slash">/</span> А на п’ятдесят п’ятому рядку <code>@media (min-width: 1440px)</code> розширює максимальну ширину контенту до <code>75rem</code> на великих моніторах.</p>
+                <p>У <code>index.html</code> на рядках сімдесят один–вісімдесят один: <span class="slash">/</span> брейкпоінт <code>max-width: 768px</code> перетворює <code>grid-template-areas</code> на одноколонковий макет; <span class="slash">/</span> таблиця на шістдесят п’ятому рядку отримала <code>min-width: 36rem</code> усередині контейнера з <code>overflow-x: auto</code>; <span class="slash">/</span> а запит <code>@media (hover: none)</code> вимикає збільшення таблиці на сенсорних пристроях.</p>
+                <p>У <code>activities.html</code> на вісімдесят третьому, дев’яносто восьмому та сто тринадцятому рядках додано гнучкі зображення з атрибутами <code>srcset</code> для версій 480 і 800 пікселів та <code>sizes</code>, <span class="slash">/</span> а на п’ятдесят дев’ятому рядку медіазапит фіксує одну колонку на телефонах.</p>
+                <p>І у <code>feedback.html</code>: на двадцять п’ятому рядку <code>fieldset</code> отримав <code>min-width: 0</code>, що прибрало горизонтальне переповнення на 320 пікселях; <span class="slash">/</span> на тридцять першому розміри <code>textarea</code> переведено з пікселів у відносні <code>rem</code>; <span class="slash">/</span> а на тридцять восьмому рядку при <code>max-width: 768px</code> форма перемикається у <code>flex-flow: column nowrap</code>.</p>
+            </div>
+        </section>
+
+        <section class="card" data-step="s42-3">
+            <div class="card-head">
+                <div>
+                    <span class="req-tag">Пункт 4.2.3</span>
+                    <h2>Внесені у код зміни для кросбраузерності</h2>
+                </div>
+                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> Показуєш у VS Code <code>lab5/style.css</code> (рядки 3, 43), <code>lab5/index.html</code> (рядки 6, 41–43) та <code>lab5/activities.html</code> (рядки 47, 49–54).
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо</span>
+                <p>Тепер зміни в коді для кросбраузерності. <span class="slash">/</span> У <code>style.css</code> на третьому рядку додано <code>-webkit-text-size-adjust: 100%</code> та стандартне <code>text-size-adjust: 100%</code>, <span class="slash">/</span> щоб iOS Safari не збільшував текст самовільно при повороті екрана. <span class="slash">/</span> На сорок третьому рядку для <code>button</code> додано <code>-webkit-appearance: none</code>, <code>-moz-appearance: none</code> і <code>appearance: none</code>, <span class="slash">/</span> щоб прибрати системне оформлення кнопок у Safari та Firefox.</p>
+                <p>У всіх HTML-файлах на шостому рядку додано метатег <code>http-equiv="X-UA-Compatible" content="IE=edge"</code>. <span class="slash">/</span> У <code>index.html</code> на сорок першому рядку через <code>@supports not selector(::-webkit-scrollbar)</code> <span class="slash">/</span> додано стилізацію скролбару для Firefox — <code>scrollbar-width: thin</code> і <code>scrollbar-color</code>.</p>
+                <p>А в <code>activities.html</code> на рядках сорок сім–п’ятдесят чотири додано вендорні префікси <code>-webkit-transform-style</code> і <code>-webkit-backface-visibility</code>, <span class="slash">/</span> скорочення <code>inset: 0</code> замінено на <code>top, right, bottom, left: 0</code> для старіших версій Safari, <span class="slash">/</span> і додано резервне перемикання через <code>visibility</code> із затримкою <code>0.3</code> секунди, <span class="slash">/</span> що повністю усунуло дзеркальне просвічування звороту фліп-картки у WebKit.</p>
+            </div>
+        </section>
+
+        <section class="card" data-step="s42-4">
+            <div class="card-head">
+                <div>
+                    <span class="req-tag">Пункт 4.2.4</span>
+                    <h2>Заміри метрик (Lighthouse) + 2 зміни у код для зміни показників</h2>
+                </div>
+                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ — ЗАМІР 1]</strong> У Chrome відкрий <code>http://localhost:8000/lab5/activities.html</code>, у DevTools перейди на вкладку <strong>Lighthouse</strong> (Device: Mobile), натисни <strong>Analyze page load</strong>. Покажи результат: Performance ~100, Accessibility 100, Best Practices 100, SEO 100, LCP ~1.4–1.5 s.
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо</span>
+                <p>Заміряємо основні метрики ефективності сторінки «Напрями діяльності» в інструменті Lighthouse у режимі мобільного пристрою. <span class="slash">/</span> Бачимо поточний результат після оптимізацій: Performance сто, Accessibility сто, Best Practices сто, SEO сто, <span class="slash">/</span> а показник Largest Contentful Paint складає близько півтори секунди.</p>
+                <p>Тепер внесу дві зміни у файл <code>activities.html</code>, щоб наочно показати, як код впливає на ці метрики.</p>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ — ВНОСИМО 2 ЗМІНИ В <code>lab5/activities.html</code>]</strong><br>
+                1) На рядку <code>7</code> і <code>9</code> тимчасово закоментуй (<code>Cmd + /</code>) мета-опис <code>&lt;meta name="description"...&gt;</code> і фавікон <code>&lt;link rel="icon"...&gt;</code> (або прибери <code>preconnect</code> на 10–11).<br>
+                2) На рядках <code>83, 98, 113</code> тимчасово прибери <code>srcset</code>, <code>sizes</code>, <code>loading="lazy"</code> і підстав важкі оригінали: <code>../assets/energy.jpg</code>, <code>../assets/industry.jpg</code>, <code>../assets/city.jpg</code> (або скопіюй з блоку нижче й збережи <code>Cmd+S</code>):
+                <div class="code-wrap">
+                    <button class="copy-btn" onclick="copyCode(this)">Копіювати 83</button>
+                    <pre>&lt;img src="../assets/energy.jpg" alt="Лінії електропередач на заході сонця" width="360" height="220" tabindex="0"&gt;</pre>
+                </div>
+                Збережи <code>activities.html</code> (<code>Cmd+S</code>) і в DevTools у Lighthouse натисни «+» (новий аудит) → <strong>Analyze page load</strong>!
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо (поки Lighthouse рахує та як з’явиться звіт)</span>
+                <p>Перша зміна — прибираю <code>srcset</code>, <code>sizes</code> та відкладене завантаження <code>loading="lazy"</code>, повертаючи великі нестиснуті фотографії. <span class="slash">/</span> Друга зміна — вимикаю теги <code>meta description</code> та іконку сайту. <span class="slash">/</span> Зберігаю файл і запускаю повторний замір Lighthouse.</p>
+                <p>Як бачимо у звіті: <span class="slash">/</span> збільшився розмір переданих даних та час завантаження головного зображення LCP, що погіршило Performance, <span class="slash">/</span> відсутність опису сторінки знизила SEO до дев’яноста одного, <span class="slash">/</span> а помилка 404 без фавіконки знизила Best Practices до дев’яноста шести. <span class="slash">/</span> Це підтверджує ефективність внесених у п’ятій лабораторній оптимізацій.</p>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> Поверни початковий код у <code>lab5/activities.html</code> (кілька разів <code>Cmd+Z</code> і <code>Cmd+S</code>), щоб залишити оптимізовану версію!
+            </div>
+        </section>
+
+        <div id="sec-4-3" class="section-divider">4.3–4.6. Контрольні питання</div>
+
+        <section class="card" data-step="s43">
+            <div class="card-head">
+                <div>
+                    <span class="req-tag">Пункти 4.3, 4.4, 4.5, 4.6</span>
+                    <h2>Теоретичні відповіді</h2>
+                </div>
+                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> Дивишся в камеру, відповідаєш чітко по черзі на 4 питання.
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо — Питання 4.3: Прийоми адаптивного дизайну</span>
+                <p>Основні прийоми реалізації гнучкого та адаптивного дизайну: <span class="slash">/</span> налаштування області перегляду через метатег <code>viewport</code>; <span class="slash">/</span> використання відносних одиниць вимірювання — <code>rem</code>, <code>em</code>, відсотків, <code>vw</code> і <code>fr</code> замість фіксованих пікселів; <span class="slash">/</span> гнучкі модульні сітки на базі CSS Grid та Flexbox; <span class="slash">/</span> адаптивні зображення через <code>max-width: 100%</code>, <code>srcset</code>, <code>sizes</code> і <code>&lt;picture&gt;</code>; <span class="slash">/</span> та застосування медіазапитів <code>@media</code> із брейкпоінтами під різні пристрої та можливості вводу.</p>
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо — Питання 4.4: Способи досягнення кросбраузерності</span>
+                <p>Основні способи досягнення кросбраузерності: <span class="slash">/</span> використання валідного семантичного HTML5 та скидання базових відступів на зразок <code>box-sizing: border-box</code> чи <code>Normalize.css</code>; <span class="slash">/</span> перевірка підтримки функцій через таблиці сумісності <code>caniuse.com</code> та MDN; <span class="slash">/</span> додавання вендорних префіксів <code>-webkit-</code> і <code>-moz-</code> або автоматизація через Autoprefixer; <span class="slash">/</span> використання директив <code>@supports</code> для резервних правил; <span class="slash">/</span> та безпосереднє тестування інтерфейсу в різних браузерних рушіях — Chromium, WebKit і Gecko.</p>
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо — Питання 4.5: Причина відмінностей між браузерами</span>
+                <p>Головна причина відмінностей між браузерами полягає в тому, <span class="slash">/</span> що вони працюють на різних програмних рушіях рендерингу та виконання JavaScript: <span class="slash">/</span> Chromium, Chrome, Edge та Opera використовують Blink і V8, <span class="slash">/</span> Firefox використовує Gecko і SpiderMonkey, <span class="slash">/</span> а Safari — WebKit і JavaScriptCore. <span class="slash">/</span> Кожен рушій має власні таблиці стилів за замовчуванням, по-різному реалізує окремі CSS-специфікації на кшталт 3D-трансформацій чи скролбарів, <span class="slash">/</span> а також із різною швидкістю впроваджує нові вебстандарти.</p>
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо — Питання 4.6: Інструменти вимірювання метрик</span>
+                <p>Для вимірювання метрик ефективності в роботі використано Google Lighthouse, вбудований у Chrome DevTools — <span class="slash">/</span> він оцінює продуктивність, доступність, найкращі практики та SEO, а також показники Core Web Vitals: FCP, LCP, TBT та CLS. <span class="slash">/</span> Потенційно для таких замірів також можуть використовуватися сервіси PageSpeed Insights, WebPageTest, GTmetrix, вкладки Performance та Network у DevTools і бібліотека <code>web-vitals</code> для збору метрик від реальних користувачів.</p>
+                <p>На цьому захист лабораторної роботи номер п’ять завершено. <span class="slash">/</span> Дякую за увагу!</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const STORAGE_KEY = 'lab5_defense_checks_v1';
+        const FONT_KEY = 'lab_defense_font_v1';
+        const savedFont = localStorage.getItem(FONT_KEY);
+        if (savedFont) document.documentElement.style.setProperty('--font-size', savedFont + 'px');
+        function changeFont(delta) {
+            const current = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--font-size'), 10) || 18;
+            const next = Math.min(28, Math.max(13, current + delta));
+            document.documentElement.style.setProperty('--font-size', next + 'px');
+            localStorage.setItem(FONT_KEY, String(next));
+        }
+        const cards = Array.from(document.querySelectorAll('.card[data-step]'));
+        const savedChecks = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+        function updateProgress() {
+            const total = cards.length;
+            const done = cards.filter(c => c.querySelector('.step-check').checked).length;
+            document.getElementById('progress-text').textContent = `Пройдено ${done} з ${total} кроків`;
+            document.getElementById('progress-fill').style.width = `${Math.round((done / total) * 100)}%`;
+        }
+        cards.forEach(card => {
+            const key = card.dataset.step;
+            const cb = card.querySelector('.step-check');
+            if (savedChecks[key]) { cb.checked = true; card.classList.add('done'); }
+            cb.addEventListener('change', () => {
+                savedChecks[key] = cb.checked;
+                card.classList.toggle('done', cb.checked);
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(savedChecks));
+                updateProgress();
+            });
+        });
+        updateProgress();
+        function resetProgress() {
+            cards.forEach(card => { card.querySelector('.step-check').checked = false; card.classList.remove('done'); });
+            localStorage.removeItem(STORAGE_KEY);
+            updateProgress();
+        }
+        let seconds = 0, interval = null;
+        const timerEl = document.getElementById('timer'), timerBtn = document.getElementById('timer-btn');
+        function renderTimer() {
+            const m = String(Math.floor(seconds / 60)).padStart(2, '0'), s = String(seconds % 60).padStart(2, '0');
+            timerEl.textContent = `${m}:${s} / 20:00`;
+            timerEl.classList.toggle('warn', seconds >= 15 * 60);
+        }
+        function toggleTimer() {
+            if (interval) { clearInterval(interval); interval = null; timerBtn.textContent = 'Продовжити'; }
+            else { interval = setInterval(() => { seconds++; renderTimer(); }, 1000); timerBtn.textContent = 'Пауза'; }
+        }
+        function resetTimer() {
+            if (interval) { clearInterval(interval); interval = null; }
+            seconds = 0; timerBtn.textContent = 'Старт'; renderTimer();
+        }
+        function copyCode(btn) {
+            navigator.clipboard.writeText(btn.nextElementSibling.textContent).then(() => {
+                const old = btn.textContent; btn.textContent = 'Скопійовано';
+                setTimeout(() => { btn.textContent = old; }, 1200);
+            });
+        }
+    </script>
+</body>
+</html>

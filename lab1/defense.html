@@ -57,6 +57,27 @@
             font-size: 0.78rem;
             color: var(--muted);
         }
+        .lab-switch {
+            display: flex;
+            gap: 6px;
+            margin-top: 6px;
+            flex-wrap: wrap;
+        }
+        .lab-switch a {
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            background: var(--surface);
+        }
+        .lab-switch a.active {
+            background: var(--accent);
+            color: #0f172a;
+            border-color: var(--accent);
+        }
         .controls {
             display: flex;
             flex-wrap: wrap;
@@ -276,6 +297,13 @@
             <div class="title-group">
                 <h1>Суфлер захисту ЛР №1 — Варіант 6 («ОБРІЙ»)</h1>
                 <div class="sub">Загорський Тарас, ІПЗ-31 (3 підгрупа) • Друг читає 🟢, ти робиш 🟡 і повторюєш</div>
+                <div class="lab-switch">
+                    <a href="../lab1/defense.html" class="active">ЛР 1</a>
+                    <a href="../lab2/defense.html">ЛР 2</a>
+                    <a href="../lab3/defense.html">ЛР 3</a>
+                    <a href="../lab4/defense.html">ЛР 4</a>
+                    <a href="../lab5/defense.html">ЛР 5</a>
+                </div>
             </div>
             <div class="controls">
                 <button class="btn" onclick="changeFont(-2)" title="Зменшити шрифт">A-</button>

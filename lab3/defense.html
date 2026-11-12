@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Суфлер захисту ЛР №3 — Варіант 6 (ОБРІЙ)</title>
+    <style>
+        :root {
+            --bg: #0f172a; --surface: #1e293b; --surface-2: #263348; --border: #334155;
+            --text: #f1f5f9; --muted: #94a3b8; --say-bg: #0d2a24; --say-border: #10b981;
+            --act-bg: #2a2110; --act-border: #f59e0b; --code-bg: #0b1120; --accent: #38bdf8;
+            --font-size: 18px;
+        }
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); font-size: var(--font-size); line-height: 1.55; padding-bottom: 64px; }
+        .topbar { position: sticky; top: 0; z-index: 50; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); padding: 10px 16px; }
+        .topbar-inner { max-width: 920px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
+        .title-group h1 { margin: 0; font-size: 1rem; font-weight: 700; }
+        .title-group .sub { font-size: 0.78rem; color: var(--muted); }
+        .lab-switch { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+        .lab-switch a { text-decoration: none; font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 6px; border: 1px solid var(--border); color: var(--muted); background: var(--surface); }
+        .lab-switch a.active { background: var(--accent); color: #0f172a; border-color: var(--accent); }
+        .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+        .btn { background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; font-size: 0.85rem; cursor: pointer; font-weight: 600; }
+        .btn:hover { border-color: var(--accent); }
+        .btn-accent { background: #0369a1; border-color: #0284c7; }
+        .timer { font-variant-numeric: tabular-nums; font-weight: 700; font-size: 0.95rem; padding: 5px 10px; border-radius: 8px; background: var(--surface-2); border: 1px solid var(--border); }
+        .timer.warn { color: #fbbf24; border-color: #f59e0b; }
+        .progress-wrap { max-width: 920px; margin: 8px auto 0; display: flex; align-items: center; gap: 10px; font-size: 0.78rem; color: var(--muted); }
+        .progress-bar { flex: 1; height: 6px; background: var(--surface); border-radius: 999px; overflow: hidden; }
+        .progress-fill { height: 100%; width: 0%; background: var(--say-border); transition: width 0.2s ease; }
+        .nav-pills { max-width: 920px; margin: 12px auto 0; padding: 0 16px; display: flex; flex-wrap: wrap; gap: 6px; }
+        .nav-pills a { color: var(--accent); text-decoration: none; font-size: 0.82rem; background: var(--surface); border: 1px solid var(--border); padding: 4px 10px; border-radius: 999px; }
+        main { max-width: 920px; margin: 16px auto 0; padding: 0 16px; }
+        .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 18px; margin-bottom: 18px; }
+        .card.done { opacity: 0.52; }
+        .card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        .card-head h2 { margin: 0; font-size: 1.12rem; color: #fff; }
+        .req-tag { display: inline-block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--accent); margin-bottom: 4px; }
+        .check-label { display: flex; align-items: center; gap: 6px; font-size: 0.82rem; color: var(--muted); cursor: pointer; user-select: none; white-space: nowrap; }
+        .check-label input { width: 18px; height: 18px; accent-color: var(--say-border); cursor: pointer; }
+        .act { background: var(--act-bg); border-left: 4px solid var(--act-border); border-radius: 8px; padding: 10px 14px; margin: 10px 0; font-size: 0.92rem; color: #fde68a; }
+        .act strong { color: #fbbf24; }
+        .say { background: var(--say-bg); border-left: 4px solid var(--say-border); border-radius: 8px; padding: 12px 14px; margin: 10px 0; }
+        .say-label { display: inline-block; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: #34d399; margin-bottom: 4px; }
+        .say p { margin: 6px 0; }
+        .slash { color: #34d399; font-weight: 800; padding: 0 3px; }
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background: rgba(15, 23, 42, 0.75); color: #7dd3fc; padding: 1px 6px; border-radius: 5px; font-size: 0.88em; border: 1px solid #334155; }
+        ul.prep { margin: 8px 0; padding-left: 20px; }
+        ul.prep li { margin: 6px 0; }
+        .section-divider { margin: 28px 0 12px; padding-left: 10px; border-left: 4px solid var(--accent); font-size: 1.25rem; font-weight: 800; color: #fff; }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <div class="topbar-inner">
+            <div class="title-group">
+                <h1>Суфлер захисту ЛР №3 — Варіант 6 («ОБРІЙ»)</h1>
+                <div class="sub">Загорський Тарас, ІПЗ-31 (3 підгрупа) • Основи JavaScript</div>
+                <div class="lab-switch">
+                    <a href="../lab1/defense.html">ЛР 1</a>
+                    <a href="../lab2/defense.html">ЛР 2</a>
+                    <a href="../lab3/defense.html" class="active">ЛР 3</a>
+                    <a href="../lab4/defense.html">ЛР 4</a>
+                    <a href="../lab5/defense.html">ЛР 5</a>
+                </div>
+            </div>
+            <div class="controls">
+                <button class="btn" onclick="changeFont(-2)">A-</button>
+                <button class="btn" onclick="changeFont(2)">A+</button>
+                <span id="timer" class="timer">00:00 / 20:00</span>
+                <button id="timer-btn" class="btn btn-accent" onclick="toggleTimer()">Старт</button>
+                <button class="btn" onclick="resetTimer()">Скинути</button>
+                <button class="btn" onclick="resetProgress()">Очистити галочки</button>
+            </div>
+        </div>
+        <div class="progress-wrap">
+            <span id="progress-text">Пройдено 0 з 13 кроків</span>
+            <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
+        </div>
+    </header>
+
+    <nav class="nav-pills">
+        <a href="#prep">0. Підготовка</a>
+        <a href="#sec-4-1">4.1 Вступ</a>
+        <a href="#sec-4-2">4.2 Код і методи JS</a>
+        <a href="#sec-4-3">4.3–4.4 Теорія</a>
+    </nav>
+
+    <main>
+        <section id="prep" class="card" data-step="prep">
+            <div class="card-head">
+                <div>
+                    <span class="req-tag">Вимоги до відеозапису (п. 1–3)</span>
+                    <h2>0. Підготовка ДО натискання «Запис»</h2>
+                </div>
+                <label class="check-label"><input type="checkbox" class="step-check"> Готово</label>
+            </div>
+            <ul class="prep">
+                <li>У VS Code відкрий 2 вкладки з папки <code>lab3</code>: <code>index.html</code> та <code>script.js</code> (читабельний шрифт <code>Cmd + +</code>).</li>
+                <li>У браузері відкрий <code>lab3/index.html</code> і відкрий DevTools (<code>Cmd+Option+I</code> / <code>F12</code>) → вкладку <strong>Console</strong>, щоб було видно і сторінку, і дубльований вивід у консолі.</li>
+                <li>Увімкни вебкамеру (обличчя в кадрі весь запис, до 20 хв).</li>
+            </ul>
+        </section>
+
+        <div id="sec-4-1" class="section-divider">4.1. Представлення студента</div>
+
+        <section class="card" data-step="s41">
+            <div class="card-head">
+                <div>
+                    <span class="req-tag">Пункт 4.1</span>
+                    <h2>Представлення: ПІБ, група, підгрупа, номер роботи, варіант</h2>
+                </div>
+                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> Дивишся в камеру, на екрані браузер із відкритою сторінкою <code>lab3/index.html</code> та консоллю. Друг тисне «Старт».
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо</span>
+                <p>Доброго дня. <span class="slash">/</span> Мене звати Тарас Загорський, <span class="slash">/</span> група ІПЗ-31, <span class="slash">/</span> третя підгрупа. <span class="slash">/</span> Захищаю лабораторну роботу номер три, <span class="slash">/</span> варіант шостий — <span class="slash">/</span> основи JavaScript на прикладі корпорації «ОБРІЙ».</p>
+            </div>
+        </section>
+
+        <div id="sec-4-2" class="section-divider">4.2. Код і результати — script.js</div>
+
+        <section class="card" data-step="s42-1">
+            <div class="card-head">
+                <div>
+                    <span class="req-tag">Пункт 4.2.1</span>
+                    <h2>Демонстрація результатів виконання згідно з варіантом 6</h2>
+                </div>
+                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> Прокручуєш сторінку <code>lab3/index.html</code> у браузері зверху донизу (показуєш блоки 1.1–1.4, 2.1–2.4, <code>typeof</code> і перетворення, плюс консоль), потім перемикаєшся у VS Code на <code>lab3/index.html</code> (рядок 13: <code>defer</code>) і <code>lab3/script.js</code>.
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо</span>
+                <p>Продемонструю результати виконання в браузері та консолі. <span class="slash">/</span> Скрипт <code>script.js</code> підключено в <code>index.html</code> на тринадцятому рядку з атрибутом <code>defer</code>. <span class="slash">/</span> У першому завданні маємо масив десяти напрямів діяльності: <span class="slash">/</span> блок 1.1 сортує їх за тривалістю послуги й обчислює середню кількість читачів для однакової тривалості; <span class="slash">/</span> блок 1.2 знаходить напрям із мінімумом читачів за другу добу — це «Промислова безпека»; <span class="slash">/</span> блок 1.3 додає новий повний запис у позицію за <code>id</code>, а неповний — у кінець масиву; <span class="slash">/</span> блок 1.4 розраховує тривалість одночасного надання кількох послуг відділу з коефіцієнтом 0.95 або 0.6.</p>
+                <p>У другому завданні оброблено десять користувачів на основі класу <code>User</code>: <span class="slash">/</span> блок 2.1 фільтрує звернення за жовтень до вказаного моменту часу; <span class="slash">/</span> блок 2.2 рахує середній вік — п’ятдесят три цілих і шість десятих року; <span class="slash">/</span> блок 2.3 групує користувачів за віком і робочим часом; <span class="slash">/</span> блок 2.4 сортує їх за українським алфавітом із метою звернення.</p>
+            </div>
+        </section>
+
+        <section class="card" data-step="s42-2">
+            <div class="card-head">
+                <div>
+                    <span class="req-tag">Пункт 4.2.2</span>
+                    <h2>≥3 елементарні та ≥2 об’єктні типи даних через typeof + усі типи JS</h2>
+                </div>
+                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> У VS Code скролиш <code>lab3/script.js</code> на рядки 121–125 (блок <code>samples</code> і <code>typeof v</code>).
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо</span>
+                <p>На рядках з сто двадцять першого по сто двадцять п’ятий я перевіряю типи даних через оператор <code>typeof</code>. <span class="slash">/</span> Із елементарних, тобто примітивних типів, бачимо: <span class="slash">/</span> число <code>6</code> дає <code>number</code>; <span class="slash">/</span> рядок <code>'Енергоаудит'</code> дає <code>string</code>; <span class="slash">/</span> логічне <code>true</code> дає <code>boolean</code>; <span class="slash">/</span> невизначене значення дає <code>undefined</code>; <span class="slash">/</span> <code>Symbol('id')</code> дає <code>symbol</code>; <span class="slash">/</span> <code>10n</code> дає <code>bigint</code>; <span class="slash">/</span> а <code>null</code> історично через баг у JS повертає <code>object</code>.</p>
+                <p>Із об’єктних типів у коді є: <span class="slash">/</span> масив <code>directions</code> і екземпляр класу <code>users[0]</code> — для них <code>typeof</code> повертає <code>object</code>, <span class="slash">/</span> та функція <code>serviceTime</code> — для неї <code>typeof</code> повертає <code>function</code>, хоча функція це підтип об’єкта.</p>
+                <p>Усього в JavaScript існує вісім типів даних: <span class="slash">/</span> сім примітивних — <code>Number</code>, <code>BigInt</code>, <code>String</code>, <code>Boolean</code>, <code>Undefined</code>, <code>Null</code>, <code>Symbol</code> — <span class="slash">/</span> та один складний посилальний тип — <code>Object</code>, до якого належать звичайні об’єкти, масиви, дати та функції.</p>
+            </div>
+        </section>
+
+        <section class="card" data-step="s42-3">
+            <div class="card-head">
+                <div>
+                    <span class="req-tag">Пункт 4.2.3</span>
+                    <h2>3 різні вбудовані функції для явного перетворення типів</h2>
+                </div>
+                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> Курсор на рядках 126–128 у <code>lab3/script.js</code> (і на рядок 22 для <code>String()</code>).
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо</span>
+                <p>На рядках сто двадцять сім і сто двадцять вісім використано чотири вбудовані функції для явного приведення типів: <span class="slash">/</span> <code>Number('12')</code> перетворює рядок у число дванадцять; <span class="slash">/</span> <code>parseInt('18 міс.')</code> виділяє ціле число вісімнадцять із початку рядка; <span class="slash">/</span> <code>String(2026)</code> перетворює число у рядок; <span class="slash">/</span> а <code>Boolean('')</code> явно перетворює порожній рядок на логічне <code>false</code>.</p>
+            </div>
+        </section>
+
+        <section class="card" data-step="s42-4">
+            <div class="card-head">
+                <div>
+                    <span class="req-tag">Пункт 4.2.4</span>
+                    <h2>3 арифметичні, 3 присвоєння та 3 оператори порівняння</h2>
+                </div>
+                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> Показуєш рядки 25, 27, 29, 41–42, 62, 76–77, 108–109, 129 у <code>lab3/script.js</code>.
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо</span>
+                <p>Покажу оператори у своєму коді. <span class="slash">/</span> Три арифметичні оператори: <span class="slash">/</span> додавання плюс і ділення скісна риска на двадцять дев’ятому рядку при обчисленні середнього; <span class="slash">/</span> віднімання мінус на двадцять п’ятому рядку в компараторі <code>a.duration - b.duration</code>; <span class="slash">/</span> та множення зірочка на шістдесят другому рядку <code>total * k</code>, плюс інкремент <code>i++</code> на сто дев’ятому.</p>
+                <p>Три оператори присвоєння: <span class="slash">/</span> базове присвоєння дорівнює, наприклад на десятому рядку; <span class="slash">/</span> додавання з присвоєнням <code>+=</code> на сто восьмому рядку для підрахунку лічильників; <span class="slash">/</span> та оператор нульового присвоєння <code>??=</code> на двадцять сьомому рядку, який ініціалізує масив групи лише якщо властивість ще <code>undefined</code>.</p>
+                <p>Три оператори порівняння: <span class="slash">/</span> сувора нерівність <code>!==</code> на сорок першому рядку; <span class="slash">/</span> строго більше <code>&gt;</code> на сорок другому та менше <code>&lt;</code> на тридцять п’ятому; <span class="slash">/</span> більше або дорівнює <code>&gt;=</code> і менше або дорівнює <code>&lt;=</code> на сімдесят шостому рядку; <span class="slash">/</span> а на сто двадцять дев’ятому показано різницю між нестрогим <code>==</code> і строгим <code>===</code> порівнянням.</p>
+            </div>
+        </section>
+
+        <section class="card" data-step="s42-5">
+            <div class="card-head">
+                <div>
+                    <span class="req-tag">Пункт 4.2.5</span>
+                    <h2>Умовна конструкція, switch та цикли</h2>
+                </div>
+                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> Показуєш рядки 43–44 (<code>if/else</code>), 56–61 (<code>switch</code>), 27 (<code>for...of</code>) і 107–110 (<code>while</code>).
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо</span>
+                <p>Умовні конструкції та цикли в коді: <span class="slash">/</span> умовний оператор <code>if / else</code> використано на сорок третьому і сорок четвертому рядках для вставки запису в кінець або за індексом, <span class="slash">/</span> а також у методі <code>group</code> на рядках сімдесят сім і сімдесят вісім для класифікації користувачів.</p>
+                <p>Оператор вибору <code>switch</code> — на рядках з п’ятдесят шостого по шістдесят перший: <span class="slash">/</span> залежно від кількості послуг відділу від одного до трьох він обирає коефіцієнт 0.95, а в гілці <code>default</code> — 0.6.</p>
+                <p>Цикли в коді: <span class="slash">/</span> цикл <code>for...of</code> на двадцять сьомому рядку перебирає відсортовані напрями; <span class="slash">/</span> а цикл з передумовою <code>while</code> на рядках з сто сьомого по сто десятий проходить масив користувачів за індексом <code>i</code>.</p>
+            </div>
+        </section>
+
+        <section class="card" data-step="s42-6">
+            <div class="card-head">
+                <div>
+                    <span class="req-tag">Пункт 4.2.6</span>
+                    <h2>Масив та 8 різних методів для роботи з ним</h2>
+                </div>
+                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> Курсор по рядках 3, 25, 29, 30, 41–45, 53 у <code>lab3/script.js</code>.
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо</span>
+                <p>Основні дані зберігаються у масивах <code>directions</code> та <code>users</code>. <span class="slash">/</span> Назву й охарактеризую вісім методів масиву з мого коду:</p>
+                <p>Перший — <code>sort()</code> на двадцять п’ятому рядку: сортує елементи масиву за переданим компаратором. <span class="slash">/</span> Другий — <code>push()</code> на двадцять сьомому і сорок третьому рядках: додає елемент у кінець масиву. <span class="slash">/</span> Третій — <code>splice()</code> на сорок четвертому рядку: вставляє або видаляє елемент за вказаним індексом. <span class="slash">/</span> Четвертий — <code>map()</code> на тридцятому рядку: трансформує кожен елемент і повертає новий масив.</p>
+                <p>П’ятий — <code>filter()</code> на п’ятдесят третьому рядку: відбирає елементи, що відповідають умові. <span class="slash">/</span> Шостий — <code>reduce()</code> на двадцять дев’ятому рядку: зводить масив до одного значення, наприклад суми чи мінімуму. <span class="slash">/</span> Сьомий — <code>findIndex()</code> на сорок другому рядку: шукає індекс першого елемента за умовою, а <code>every()</code> на сорок першому перевіряє, чи всі елементи задовольняють умову. <span class="slash">/</span> Восьмий — <code>join()</code> на третьому і тридцятому рядках: об’єднує елементи масиву в один рядок через роздільник, а <code>concat()</code> на третьому рядку з’єднує масиви.</p>
+            </div>
+        </section>
+
+        <section class="card" data-step="s42-7">
+            <div class="card-head">
+                <div>
+                    <span class="req-tag">Пункт 4.2.7</span>
+                    <h2>Функції: спосіб оголошення та область видимості (scope)</h2>
+                </div>
+                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> Показуєш рядки 2 (<code>print</code>), 22 (<code>row</code>), 39 (<code>addDirection</code>) і 52 (<code>serviceTime</code>).
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо</span>
+                <p>У скрипті використано всі три способи оголошення функцій.</p>
+                <p>Перший — <code>function declaration</code>, наприклад <code>print</code> на другому рядку та <code>addDirection</code> на тридцять дев’ятому: <span class="slash">/</span> такі функції піднімаються на початок області видимості, тому їх можна викликати ще до місця оголошення. <span class="slash">/</span> Другий — <code>function expression</code>, функція <code>serviceTime</code> на п’ятдесят другому рядку, присвоєна константі: <span class="slash">/</span> вона доступна лише після рядка ініціалізації.</p>
+                <p>Третій — стрілкові функції, наприклад <code>row</code> на двадцять другому рядку <span class="slash">/</span> та колбеки в <code>map</code> і <code>filter</code>. <span class="slash">/</span> Щодо області видимості, або <code>scope</code>: змінні, оголошені всередині функцій через <code>const</code> і <code>let</code>, мають локальну блочну або функціональну видимість <span class="slash">/</span> і не конфліктують із глобальним рівнем скрипту.</p>
+            </div>
+        </section>
+
+        <section class="card" data-step="s42-8">
+            <div class="card-head">
+                <div>
+                    <span class="req-tag">Пункт 4.2.8</span>
+                    <h2>Об’єктно-орієнтований код (class User, властивості, методи)</h2>
+                </div>
+                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> Курсор на рядках 68–93 у <code>lab3/script.js</code>.
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо</span>
+                <p>На рядках з шістдесят восьмого по дев’яносто третій реалізовано об’єктно-орієнтований підхід за допомогою ES6-класу <code>User</code>.</p>
+                <p>Нові об’єкти створюються через оператор <code>new User(...)</code> на рядках з вісімдесят третього по дев’яносто другий. <span class="slash">/</span> У конструкторі через <code>Object.assign</code> екземпляру записуються властивості: <span class="slash">/</span> <code>surname</code>, <code>name</code>, <code>age</code>, <code>education</code>, <code>purpose</code> та <code>date</code> як екземпляр вбудованого класу <code>Date</code>.</p>
+                <p>Також клас має три методи-геттери: <span class="slash">/</span> <code>fullName</code> повертає повне ім’я; <span class="slash">/</span> <code>time</code> форматує дату й час; <span class="slash">/</span> а <code>group</code> обчислює вікову та часову категорію користувача.</p>
+            </div>
+        </section>
+
+        <section class="card" data-step="s42-9">
+            <div class="card-head">
+                <div>
+                    <span class="req-tag">Пункт 4.2.9</span>
+                    <h2>По 3 методи роботи з Date, Math та String</h2>
+                </div>
+                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> Показуєш рядки 73–75 і 97 (<code>Date</code>), 62 і 130 (<code>Math</code>), 22 і 117–118 (<code>String</code>).
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо</span>
+                <p>У коді використано щонайменше по три методи для об’єктів <code>Date</code>, <code>Math</code> та <code>String</code>.</p>
+                <p>Для <code>Date</code>: <span class="slash">/</span> <code>toLocaleString()</code> на сімдесят третьому рядку для локалізованого форматування; <span class="slash">/</span> <code>getHours()</code> і <code>getMinutes()</code> на сімдесят п’ятому рядку для перевірки робочого часу; <span class="slash">/</span> і <code>getMonth()</code> на дев’яносто сьомому рядку для відбору звернень за жовтень.</p>
+                <p>Для <code>Math</code>: <span class="slash">/</span> <code>Math.round()</code> на шістдесят другому рядку для округлення тривалості; <span class="slash">/</span> <code>Math.max()</code> і <code>Math.min()</code> на сто тридцятому рядку для пошуку найбільшої та найменшої кількості читачів.</p>
+                <p>Для <code>String</code>: <span class="slash">/</span> <code>padStart()</code> і <code>padEnd()</code> на двадцять другому рядку для вирівнювання колонок табличного тексту; <span class="slash">/</span> <code>localeCompare()</code> на сто сімнадцятому рядку для алфавітного сортування українською; <span class="slash">/</span> і <code>toUpperCase()</code> на сто вісімнадцятому рядку для переведення тексту у верхній регістр.</p>
+            </div>
+        </section>
+
+        <div id="sec-4-3" class="section-divider">4.3–4.4. Контрольні питання</div>
+
+        <section class="card" data-step="s43">
+            <div class="card-head">
+                <div>
+                    <span class="req-tag">Пункти 4.3 та 4.4</span>
+                    <h2>Неявне перетворення типів (3 приклади); Hoisting</h2>
+                </div>
+                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> Показуєш рядок 129 у <code>script.js</code> (там приклади неявного перетворення) і відповідаєш упевнено на камеру.
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо — Питання 4.3: Неявне перетворення типів</span>
+                <p>Неявне перетворення типів — це автоматична зміна типу значення інтерпретатором JavaScript <span class="slash">/</span> під час виконання операцій над різними типами без виклику функцій на кшталт <code>Number()</code> чи <code>String()</code>.</p>
+                <p>Три приклади зі сто двадцять дев’ятого рядка мого коду: <span class="slash">/</span> перший — рядок <code>'5'</code> помножити на <code>2</code> дає число <code>10</code>, бо оператор множення перетворює рядок на число; <span class="slash">/</span> другий — рядок <code>'5'</code> плюс <code>2</code> дає рядок <code>'52'</code>, бо плюс із рядком виконує конкатенацію; <span class="slash">/</span> третій — нестроге порівняння <code>1 == '1'</code> дає <code>true</code> через приведення до одного типу, тоді як <code>1 === '1'</code> дає <code>false</code>.</p>
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо — Питання 4.4: Механізм hoisting (піднімання)</span>
+                <p>Механізм <code>hoisting</code>, або піднімання — це особливість JavaScript, <span class="slash">/</span> при якій оголошення змінних і функцій переміщуються рушієм на початок їхньої області видимості ще до виконання коду.</p>
+                <p>Наприклад, функції оголошені через <code>function declaration</code>, як-от моя функція <code>print</code>, піднімаються повністю — їх можна викликати ще до рядка оголошення. <span class="slash">/</span> Змінні через <code>var</code> піднімаються зі значенням <code>undefined</code>. <span class="slash">/</span> А змінні <code>let</code>, <code>const</code> і функціональні вирази на кшталт <code>const serviceTime</code> хоч і реєструються, але потрапляють у тимчасову мертву зону — звернення до них до рядка оголошення викликає помилку <code>ReferenceError</code>.</p>
+                <p>На цьому захист лабораторної роботи номер три завершено. <span class="slash">/</span> Дякую за увагу!</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const STORAGE_KEY = 'lab3_defense_checks_v1';
+        const FONT_KEY = 'lab_defense_font_v1';
+        const savedFont = localStorage.getItem(FONT_KEY);
+        if (savedFont) document.documentElement.style.setProperty('--font-size', savedFont + 'px');
+        function changeFont(delta) {
+            const current = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--font-size'), 10) || 18;
+            const next = Math.min(28, Math.max(13, current + delta));
+            document.documentElement.style.setProperty('--font-size', next + 'px');
+            localStorage.setItem(FONT_KEY, String(next));
+        }
+        const cards = Array.from(document.querySelectorAll('.card[data-step]'));
+        const savedChecks = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+        function updateProgress() {
+            const total = cards.length;
+            const done = cards.filter(c => c.querySelector('.step-check').checked).length;
+            document.getElementById('progress-text').textContent = `Пройдено ${done} з ${total} кроків`;
+            document.getElementById('progress-fill').style.width = `${Math.round((done / total) * 100)}%`;
+        }
+        cards.forEach(card => {
+            const key = card.dataset.step;
+            const cb = card.querySelector('.step-check');
+            if (savedChecks[key]) { cb.checked = true; card.classList.add('done'); }
+            cb.addEventListener('change', () => {
+                savedChecks[key] = cb.checked;
+                card.classList.toggle('done', cb.checked);
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(savedChecks));
+                updateProgress();
+            });
+        });
+        updateProgress();
+        function resetProgress() {
+            cards.forEach(card => { card.querySelector('.step-check').checked = false; card.classList.remove('done'); });
+            localStorage.removeItem(STORAGE_KEY);
+            updateProgress();
+        }
+        let seconds = 0, interval = null;
+        const timerEl = document.getElementById('timer'), timerBtn = document.getElementById('timer-btn');
+        function renderTimer() {
+            const m = String(Math.floor(seconds / 60)).padStart(2, '0'), s = String(seconds % 60).padStart(2, '0');
+            timerEl.textContent = `${m}:${s} / 20:00`;
+            timerEl.classList.toggle('warn', seconds >= 15 * 60);
+        }
+        function toggleTimer() {
+            if (interval) { clearInterval(interval); interval = null; timerBtn.textContent = 'Продовжити'; }
+            else { interval = setInterval(() => { seconds++; renderTimer(); }, 1000); timerBtn.textContent = 'Пауза'; }
+        }
+        function resetTimer() {
+            if (interval) { clearInterval(interval); interval = null; }
+            seconds = 0; timerBtn.textContent = 'Старт'; renderTimer();
+        }
+    </script>
+</body>
+</html>
