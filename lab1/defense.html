@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Суфлер захисту ЛР №1 — Варіант 6 (ОБРІЙ)</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --surface-2: #263348;
+            --border: #334155;
+            --text: #f1f5f9;
+            --muted: #94a3b8;
+            --say-bg: #0d2a24;
+            --say-border: #10b981;
+            --act-bg: #2a2110;
+            --act-border: #f59e0b;
+            --code-bg: #0b1120;
+            --accent: #38bdf8;
+            --font-size: 18px;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            font-size: var(--font-size);
+            line-height: 1.55;
+            padding-bottom: 64px;
+        }
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border);
+            padding: 10px 16px;
+        }
+        .topbar-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .title-group h1 {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+        .title-group .sub {
+            font-size: 0.78rem;
+            color: var(--muted);
+        }
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn {
+            background: var(--surface);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 6px 10px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn:hover { border-color: var(--accent); }
+        .btn-accent {
+            background: #0369a1;
+            border-color: #0284c7;
+        }
+        .timer {
+            font-variant-numeric: tabular-nums;
+            font-weight: 700;
+            font-size: 0.95rem;
+            padding: 5px 10px;
+            border-radius: 8px;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+        }
+        .timer.warn { color: #fbbf24; border-color: #f59e0b; }
+        .progress-wrap {
+            max-width: 900px;
+            margin: 8px auto 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.78rem;
+            color: var(--muted);
+        }
+        .progress-bar {
+            flex: 1;
+            height: 6px;
+            background: var(--surface);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--say-border);
+            transition: width 0.2s ease;
+        }
+        .nav-pills {
+            max-width: 900px;
+            margin: 12px auto 0;
+            padding: 0 16px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .nav-pills a {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.82rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 4px 10px;
+            border-radius: 999px;
+        }
+        .nav-pills a:hover { border-color: var(--accent); }
+        main {
+            max-width: 900px;
+            margin: 16px auto 0;
+            padding: 0 16px;
+        }
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 18px;
+        }
+        .card.done {
+            opacity: 0.52;
+        }
+        .card-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+        }
+        .card-head h2 {
+            margin: 0;
+            font-size: 1.12rem;
+            color: #fff;
+        }
+        .req-tag {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--accent);
+            margin-bottom: 4px;
+        }
+        .check-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.82rem;
+            color: var(--muted);
+            cursor: pointer;
+            user-select: none;
+            white-space: nowrap;
+        }
+        .check-label input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--say-border);
+            cursor: pointer;
+        }
+        .act {
+            background: var(--act-bg);
+            border-left: 4px solid var(--act-border);
+            border-radius: 8px;
+            padding: 10px 14px;
+            margin: 10px 0;
+            font-size: 0.92rem;
+            color: #fde68a;
+        }
+        .act strong { color: #fbbf24; }
+        .say {
+            background: var(--say-bg);
+            border-left: 4px solid var(--say-border);
+            border-radius: 8px;
+            padding: 12px 14px;
+            margin: 10px 0;
+        }
+        .say-label {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: #34d399;
+            margin-bottom: 4px;
+        }
+        .say p {
+            margin: 6px 0;
+        }
+        .slash {
+            color: #34d399;
+            font-weight: 800;
+            padding: 0 3px;
+        }
+        code {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            background: rgba(15, 23, 42, 0.75);
+            color: #7dd3fc;
+            padding: 1px 6px;
+            border-radius: 5px;
+            font-size: 0.88em;
+            border: 1px solid #334155;
+        }
+        pre {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            overflow-x: auto;
+            font-size: 0.86rem;
+            margin: 8px 0;
+            color: #e2e8f0;
+        }
+        .code-wrap {
+            position: relative;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: var(--surface);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 3px 8px;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+        .note {
+            font-size: 0.86rem;
+            color: var(--muted);
+            margin: 8px 0 0;
+        }
+        ul.prep {
+            margin: 8px 0;
+            padding-left: 20px;
+        }
+        ul.prep li { margin: 6px 0; }
+        .section-divider {
+            margin: 28px 0 12px;
+            padding-left: 10px;
+            border-left: 4px solid var(--accent);
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <div class="topbar-inner">
+            <div class="title-group">
+                <h1>Суфлер захисту ЛР №1 — Варіант 6 («ОБРІЙ»)</h1>
+                <div class="sub">Загорський Тарас, ІПЗ-31 (3 підгрупа) • Друг читає 🟢, ти робиш 🟡 і повторюєш</div>
+            </div>
+            <div class="controls">
+                <button class="btn" onclick="changeFont(-2)" title="Зменшити шрифт">A-</button>
+                <button class="btn" onclick="changeFont(2)" title="Збільшити шрифт">A+</button>
+                <span id="timer" class="timer">00:00 / 20:00</span>
+                <button id="timer-btn" class="btn btn-accent" onclick="toggleTimer()">Старт</button>
+                <button class="btn" onclick="resetTimer()">Скинути</button>
+                <button class="btn" onclick="resetProgress()">Очистити галочки</button>
+            </div>
+        </div>
+        <div class="progress-wrap">
+            <span id="progress-text">Пройдено 0 з 13 кроків</span>
+            <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
+        </div>
+    </header>
+
+    <nav class="nav-pills">
+        <a href="#prep">0. Підготовка</a>
+        <a href="#sec-4-1">4.1 Вступ</a>
+        <a href="#sec-4-2">4.2 index.html</a>
+        <a href="#sec-4-3">4.3 activities.html</a>
+        <a href="#sec-4-4">4.4 feedback.html</a>
+        <a href="#sec-4-5">4.5 Теорія</a>
+    </nav>
+
+    <main>
+        <section id="prep" class="card" data-step="prep">
+            <div class="card-head">
+                <div>
+                    <span class="req-tag">Вимоги до відеозапису (п. 1–3)</span>
+                    <h2>0. Підготовка ДО натискання «Запис»</h2>
+                </div>
+                <label class="check-label"><input type="checkbox" class="step-check"> Готово</label>
+            </div>
+            <ul class="prep">
+                <li>У редакторі (VS Code) відкрий 3 вкладки з папки <code>lab1</code>: <code>index.html</code>, <code>activities.html</code>, <code>feedback.html</code>.</li>
+                <li>Збільш шрифт у редакторі (<code>Cmd + +</code>), щоб викладачу було чітко видно код і номери рядків.</li>
+                <li>У браузері відкрий <code>lab1/index.html</code> (знадобиться показати таблицю в п. 4.2.6).</li>
+                <li>Увімкни вебкамеру — <strong>обличчя має бути в кадрі весь запис</strong> (ліміт: до 20 хвилин).</li>
+                <li>На старті на екрані відкритий <code>index.html</code> з рядка 1.</li>
+                <li>Після запису залий відео на <strong>Google Диск корпоративної пошти knu.ua</strong> і прикріпи посилання + звіт у Classroom.</li>
+            </ul>
+        </section>
+
+        <div id="sec-4-1" class="section-divider">4.1. Представлення студента</div>
+
+        <section class="card" data-step="s41">
+            <div class="card-head">
+                <div>
+                    <span class="req-tag">Пункт 4.1</span>
+                    <h2>Представлення: ПІБ, група, підгрупа, номер роботи, варіант</h2>
+                </div>
+                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> Дивишся в камеру. На екрані відкритий <code>index.html</code> (верх файлу). Друг натискає «Старт» на таймері.
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо (знак / — пауза)</span>
+                <p>Доброго дня. <span class="slash">/</span> Мене звати Тарас Загорський, <span class="slash">/</span> група ІПЗ-31, <span class="slash">/</span> третя підгрупа. <span class="slash">/</span> Захищаю лабораторну роботу номер один, <span class="slash">/</span> варіант шостий — <span class="slash">/</span> промосайт корпорації «ОБРІЙ».</p>
+            </div>
+        </section>
+
+        <div id="sec-4-2" class="section-divider">4.2. Головна сторінка — index.html</div>
+
+        <section class="card" data-step="s42-1">
+            <div class="card-head">
+                <div>
+                    <span class="req-tag">Пункт 4.2.1</span>
+                    <h2>4 приклади потокового контенту + 3 приклади метаданих</h2>
+                </div>
+                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> Водиш курсором по <code>index.html</code> по тих рядках, які називаєш: рядок 14, 27, 30, 40, 25, потім скролиш нагору до рядків 3–9 (<code>&lt;head&gt;</code>).
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо</span>
+                <p>Почнемо з головної сторінки — <span class="slash">/</span> файлу <code>index.html</code>. <span class="slash">/</span> Спочатку наведу чотири різні приклади елементів <span class="slash">/</span> потокового контенту, тобто <code>flow content</code>.</p>
+                <p>Перший приклад — тег <code>&lt;p&gt;</code>, <span class="slash">/</span> наприклад на чотирнадцятому або двадцять сьомому рядку. <span class="slash">/</span> Він позначає текстовий абзац <span class="slash">/</span> і групує логічно пов’язані речення.</p>
+                <p>Другий приклад — тег <code>&lt;ol&gt;</code> на тридцятому рядку. <span class="slash">/</span> Це впорядкований нумерований список, <span class="slash">/</span> у мене з атрибутом <code>type="I"</code>, <span class="slash">/</span> тобто основні завдання нумеруються великими римськими цифрами.</p>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> Скролиш до рядка 40 (показуєш <code>&lt;table&gt;</code>), потім повертаєшся до рядка 25 (<code>&lt;article&gt;</code>).
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо</span>
+                <p>Третій приклад — тег <code>&lt;table&gt;</code> на сороковому рядку. <span class="slash">/</span> Він формує структуровану таблицю з даними — <span class="slash">/</span> тут це інформація про засновників корпорації.</p>
+                <p>Четвертий приклад — тег <code>&lt;article&gt;</code> на двадцять п’ятому рядку. <span class="slash">/</span> Він задає самостійний, змістовно завершений блок, <span class="slash">/</span> який має сенс навіть окремо від сторінки — <span class="slash">/</span> це розділ про мету створення корпорації.</p>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> Скролиш на самий верх — рядки 3–9 (блок <code>&lt;head&gt;</code>).
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо</span>
+                <p>Тепер три різні приклади елементів <span class="slash">/</span> контенту метаданих у блоці <code>&lt;head&gt;</code>.</p>
+                <p>Перший — тег <code>&lt;meta&gt;</code> на рядках з четвертого по шостий. <span class="slash">/</span> Він передає браузеру та пошуковим системам <span class="slash">/</span> службові відомості про документ.</p>
+                <p>Другий — тег <code>&lt;title&gt;</code> на сьомому рядку. <span class="slash">/</span> Він задає заголовок документа, <span class="slash">/</span> який відображається на вкладці браузера.</p>
+                <p>Третій — тег <code>&lt;link&gt;</code> на восьмому рядку. <span class="slash">/</span> Він визначає зв’язок із зовнішнім ресурсом — <span class="slash">/</span> підключає таблицю стилів <code>style.css</code>.</p>
+            </div>
+        </section>
+
+        <section class="card" data-step="s42-2">
+            <div class="card-head">
+                <div>
+                    <span class="req-tag">Пункт 4.2.2</span>
+                    <h2>Розбір тегів &lt;meta&gt; + внесення змін у код</h2>
+                </div>
+                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> Курсор на рядках 4–6 у <code>index.html</code>.
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо</span>
+                <p>Прокоментую кожен тег <code>&lt;meta&gt;</code> у своєму коді.</p>
+                <p>Четвертий рядок: <code>&lt;meta charset="UTF-8"&gt;</code>. <span class="slash">/</span> Атрибут <code>charset</code> зі значенням <code>"UTF-8"</code> задає кодування символів, <span class="slash">/</span> щоб коректно відображалась кирилиця.</p>
+                <p>П’ятий рядок: <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code>. <span class="slash">/</span> Атрибут <code>name="viewport"</code> і <code>content</code> налаштовують область перегляду <span class="slash">/</span> під ширину екрана пристрою з початковим масштабом один до одного.</p>
+                <p>Шостий рядок: <code>&lt;meta name="description" content="..."&gt;</code>. <span class="slash">/</span> Атрибут <code>name="description"</code> і <code>content</code> задають короткий опис сторінки для пошукових систем.</p>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ — ЗМІНА В КОДІ]</strong> Після 6-го рядка натискаєш <code>Enter</code> і додаєш 2 нові теги <code>&lt;meta&gt;</code> з новими значеннями та новим атрибутом <code>http-equiv</code>, після чого зберігаєш файл (<code>Cmd+S</code>):
+                <div class="code-wrap">
+                    <button class="copy-btn" onclick="copyCode(this)">Копіювати</button>
+                    <pre>    &lt;meta name="author" content="Тарас Загорський"&gt;
+    &lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;</pre>
+                </div>
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо (поки або одразу як дописав)</span>
+                <p>Тепер внесу зміни в код — <span class="slash">/</span> додам інші можливі атрибути та значення, <span class="slash">/</span> які я раніше не використовував.</p>
+                <p>Додаю <code>&lt;meta name="author" content="Тарас Загорський"&gt;</code>. <span class="slash">/</span> Тут атрибут <code>name</code> має нове значення <code>"author"</code> <span class="slash">/</span> і вказує автора документа.</p>
+                <p>Також додаю новий атрибут <code>http-equiv</code>: <span class="slash">/</span> <code>&lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;</code>. <span class="slash">/</span> Атрибут <code>http-equiv</code> імітує HTTP-заголовок відповіді <span class="slash">/</span> і задає режим сумісності рендерингу для браузера. <span class="slash">/</span> Зберігаю файл.</p>
+            </div>
+            <p class="note">Увага: через 2 додані рядки всі наступні рядки в <code>index.html</code> змістились на <strong>+2</strong>. Далі в дужках зазначені вже нові номери рядків.</p>
+        </section>
+
+        <section class="card" data-step="s42-3">
+            <div class="card-head">
+                <div>
+                    <span class="req-tag">Пункт 4.2.3</span>
+                    <h2>3 приклади sectioning content + семантика</h2>
+                </div>
+                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> Показуєш у <code>index.html</code> рядок 19 (<code>&lt;nav&gt;</code>), рядок 27 (<code>&lt;article&gt;</code>), рядок 39 (<code>&lt;section&gt;</code>), за бажанням рядок 86 (<code>&lt;aside&gt;</code>).
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо</span>
+                <p>Далі наведу три різні приклади елементів <span class="slash">/</span> категорії <code>sectioning content</code>, тобто секційного контенту.</p>
+                <p>Перший — тег <code>&lt;nav&gt;</code> на дев’ятнадцятому рядку. <span class="slash">/</span> Він позначає розділ сторінки з навігаційними посиланнями <span class="slash">/</span> для переходу між сторінками або секціями.</p>
+                <p>Другий — тег <code>&lt;article&gt;</code> на двадцять сьомому рядку. <span class="slash">/</span> Він виділяє автономний, самостійний фрагмент контенту, <span class="slash">/</span> який може існувати незалежно.</p>
+                <p>Третій — тег <code>&lt;section&gt;</code> на тридцять дев’ятому рядку. <span class="slash">/</span> Він групує тематичний розділ документа зі своїм заголовком — <span class="slash">/</span> у нас це розділ засновників. <span class="slash">/</span> Також нижче є <code>&lt;aside&gt;</code> на вісімдесят шостому рядку — додатковий бічний блок.</p>
+            </div>
+        </section>
+
+        <section class="card" data-step="s42-4">
+            <div class="card-head">
+                <div>
+                    <span class="req-tag">Пункт 4.2.4</span>
+                    <h2>Усі теги &lt;a&gt;...&lt;/a&gt; в index.html + 2 зміни в код</h2>
+                </div>
+                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> Курсор на рядках 20–22 (у <code>&lt;nav&gt;</code>), потім рядок 26 (якірні посилання).
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо</span>
+                <p>Тепер детально прокоментую всі рядки коду, <span class="slash">/</span> які містять теги <code>&lt;a&gt;</code>.</p>
+                <p>У блоці навігації маємо три посилання. <span class="slash">/</span> Двадцятий рядок: <code>&lt;a href="index.html" aria-current="page"&gt;Головна&lt;/a&gt;</code>. <span class="slash">/</span> Атрибут <code>href="index.html"</code> задає відносний шлях до головної сторінки, <span class="slash">/</span> а атрибут <code>aria-current="page"</code> повідомляє допоміжним технологіям, <span class="slash">/</span> що це поточна активна сторінка.</p>
+                <p>Двадцять перший рядок: <code>&lt;a href="activities.html"&gt;</code>. <span class="slash">/</span> Атрибут <code>href</code> веде на локальний файл другої сторінки.</p>
+                <p>Двадцять другий рядок: <code>&lt;a href="feedback.html"&gt;</code>. <span class="slash">/</span> Атрибут <code>href</code> веде на локальний файл сторінки зворотнього зв’язку.</p>
+                <p>На двадцять шостому рядку маємо два внутрішні якірні посилання: <span class="slash">/</span> <code>&lt;a href="#about"&gt;Про корпорацію&lt;/a&gt;</code> і <code>&lt;a href="#founders"&gt;Засновники&lt;/a&gt;</code>. <span class="slash">/</span> Символ решітки в <code>href</code> переводить фокус до елемента <span class="slash">/</span> із відповідним <code>id</code> всередині цієї ж сторінки.</p>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> Скролиш до <code>&lt;aside&gt;</code> (рядки 89–90) і потім до <code>&lt;footer&gt;</code> (рядки 99–100).
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо</span>
+                <p>У блоці <code>&lt;aside&gt;</code> на вісімдесят дев’ятому і дев’яностому рядках — два зовнішні посилання: <span class="slash">/</span> на Урядовий портал <code>kmu.gov.ua</code> та Верховну Раду <code>rada.gov.ua</code>.</p>
+                <p>Атрибут <code>href</code> тут містить абсолютну HTTPS-адресу. <span class="slash">/</span> Атрибут <code>target="_blank"</code> відкриває сайт у новій вкладці браузера. <span class="slash">/</span> Атрибут <code>rel="noopener noreferrer"</code> забезпечує безпеку та приватність: <span class="slash">/</span> <code>noopener</code> не дає новій вкладці доступу до об’єкта <code>window.opener</code>, <span class="slash">/</span> а <code>noreferrer</code> не передає адресу початкової сторінки в заголовку переходу.</p>
+                <p>І останні два теги <code>&lt;a&gt;</code> знаходяться у <code>&lt;footer&gt;</code>, усередині <code>&lt;address&gt;</code>: <span class="slash">/</span> дев’яносто дев’ятий рядок — <code>&lt;a href="tel:+380440000000"&gt;</code>, <span class="slash">/</span> схема <code>tel:</code> запускає застосунок для телефонного дзвінка. <span class="slash">/</span> І сотий рядок — <code>&lt;a href="mailto:info@obriy.example"&gt;</code>, <span class="slash">/</span> схема <code>mailto:</code> відкриває поштовий клієнт для написання листа.</p>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ — 2 ЗМІНИ В КОДІ]</strong> Повертаєшся на рядок 89 (<code>kmu.gov.ua</code>). Робиш 2 зміни та зберігаєш (<code>Cmd+S</code>):<br>
+                1) Замінюєш <code>target="_blank"</code> на <code>target="_self"</code><br>
+                2) Додаєш новий атрибут <code>title="Відкрити Урядовий портал"</code>:
+                <div class="code-wrap">
+                    <button class="copy-btn" onclick="copyCode(this)">Копіювати</button>
+                    <pre>&lt;li&gt;&lt;a href="https://www.kmu.gov.ua/" target="_self" rel="noopener noreferrer" title="Відкрити Урядовий портал"&gt;Урядовий портал&lt;/a&gt;&lt;/li&gt;</pre>
+                </div>
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо</span>
+                <p>Тепер внесу дві зміни у посилання на вісімдесят дев’ятому рядку. <span class="slash">/</span> Перша зміна — замінюю значення атрибуту <code>target</code> <span class="slash">/</span> із <code>"_blank"</code> на <code>"_self"</code>, <span class="slash">/</span> щоб посилання відкривалося у цій самій вкладці, а не в новій.</p>
+                <p>Друга зміна — додаю новий атрибут: <span class="slash">/</span> <code>title="Відкрити Урядовий портал"</code>. <span class="slash">/</span> Тепер при наведенні курсора з’явиться спливаюча підказка. <span class="slash">/</span> Зберігаю файл.</p>
+            </div>
+        </section>
+
+        <section class="card" data-step="s42-5">
+            <div class="card-head">
+                <div>
+                    <span class="req-tag">Пункт 4.2.5</span>
+                    <h2>3 приклади елементів з глобальними атрибутами</h2>
+                </div>
+                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> Показуєш рядок 2 (<code>&lt;html&gt;</code>), рядок 27 (<code>&lt;article&gt;</code>) і рядок 39 (<code>&lt;section&gt;</code>).
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо</span>
+                <p>Наведу три різні приклади елементів, <span class="slash">/</span> які мають глобальні атрибути — тобто універсальні атрибути, доступні для будь-якого тегу.</p>
+                <p>Перший приклад — другий рядок, тег <code>&lt;html lang="uk"&gt;</code>. <span class="slash">/</span> Глобальний атрибут <code>lang</code> зі значенням <code>"uk"</code> <span class="slash">/</span> вказує, що основна мова документа — українська.</p>
+                <p>Другий приклад — двадцять сьомий рядок, тег <code>&lt;article id="about" title="Мета та завдання корпорації"&gt;</code>. <span class="slash">/</span> Глобальний атрибут <code>id</code> задає унікальний ідентифікатор елемента для якірних посилань і стилів, <span class="slash">/</span> а глобальний атрибут <code>title</code> додає текстову підказку при наведенні.</p>
+                <p>Третій приклад — тридцять дев’ятий рядок, тег <code>&lt;section id="founders"&gt;</code>. <span class="slash">/</span> Тут глобальний атрибут <code>id="founders"</code> <span class="slash">/</span> унікально ідентифікує секцію з таблицею засновників.</p>
+            </div>
+        </section>
+
+        <section class="card" data-step="s42-6">
+            <div class="card-head">
+                <div>
+                    <span class="req-tag">Пункт 4.2.6</span>
+                    <h2>Таблиця: теги, ілюстрація в браузері, атрибути</h2>
+                </div>
+                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> Курсор на блоці <code>&lt;table&gt;</code> (рядки 42–83). Потім на мить перемкнись у браузер показати таблицю і повернись у код!
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо</span>
+                <p>Тепер прокоментую таблицю засновників. <span class="slash">/</span> Основні теги для її формування: <span class="slash">/</span> <code>&lt;table&gt;</code> — контейнер таблиці; <span class="slash">/</span> <code>&lt;caption&gt;</code> — назва таблиці; <span class="slash">/</span> <code>&lt;thead&gt;</code> — верхня частина із заголовками стовпців; <span class="slash">/</span> <code>&lt;tbody&gt;</code> — основне тіло таблиці; <span class="slash">/</span> <code>&lt;tfoot&gt;</code> — нижній підсумковий колонтитул; <span class="slash">/</span> <code>&lt;tr&gt;</code> — рядок таблиці; <span class="slash">/</span> <code>&lt;th&gt;</code> — заголовкова комірка; <span class="slash">/</span> і <code>&lt;td&gt;</code> — звичайна комірка даних.</p>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> Перемикаєшся у вікно браузера з відкритим <code>index.html</code>, показуєш таблицю 3 секунди, і повертаєшся у VS Code.
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо</span>
+                <p>Ось так таблиця виглядає у браузері: <span class="slash">/</span> вона має шість стовпців, шість рядків основної частини, <span class="slash">/</span> і три комірки з прізвищами об’єднані по вертикалі та горизонталі.</p>
+                <p>Атрибути, які я використав для верстки таблиці: <span class="slash">/</span> у <code>&lt;thead&gt;</code> на кожному <code>&lt;th&gt;</code> вказано <code>scope="col"</code> — <span class="slash">/</span> це означає, що заголовок належить до всього стовпця.</p>
+                <p>У <code>&lt;tbody&gt;</code> на трьох комірках із ПІБ — Коваль, Мельник і Бондар — <span class="slash">/</span> одночасно застосовано <code>rowspan="2"</code> для об’єднання двох рядків, <span class="slash">/</span> <code>colspan="2"</code> для об’єднання двох стовпців «Прізвище» та «Ініціали», <span class="slash">/</span> і <code>scope="rowgroup"</code>, що прив’язує заголовок до групи з двох рядків.</p>
+                <p>На комірках посади, досвіду та освіти теж стоїть <code>rowspan="2"</code>, <span class="slash">/</span> бо в кожного засновника по два рядки обов’язків. <span class="slash">/</span> А в <code>&lt;tfoot&gt;</code> використано <code>colspan="6"</code>, <span class="slash">/</span> щоб розтягнути підсумок на всю ширину таблиці.</p>
+            </div>
+        </section>
+
+        <div id="sec-4-3" class="section-divider">4.3. Сторінка 2 — activities.html</div>
+
+        <section class="card" data-step="s43-1">
+            <div class="card-head">
+                <div>
+                    <span class="req-tag">Пункт 4.3.1</span>
+                    <h2>3 приклади вбудованого контенту (Embedded content)</h2>
+                </div>
+                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> Перемикаєшся на вкладку <code>activities.html</code> у VS Code. Показуєш рядки 25–27, 35, 51.
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо</span>
+                <p>Переходимо до другої сторінки — <span class="slash">/</span> файлу <code>activities.html</code>, «Напрями діяльності».</p>
+                <p>Наведу три різні приклади елементів <span class="slash">/</span> вбудованого контенту, тобто <code>embedded content</code>:</p>
+                <p>Перший — тег <code>&lt;picture&gt;</code> на двадцять п’ятому рядку. <span class="slash">/</span> Це контейнер для гнучкого вибору зображень: <span class="slash">/</span> усередину можна додавати теги <code>&lt;source&gt;</code> під різні екрани чи формати, <span class="slash">/</span> а вкладений <code>&lt;img&gt;</code> лишається обов’язковим базовим варіантом.</p>
+                <p>Другий — тег <code>&lt;img&gt;</code> на одинадцятому, двадцять шостому, тридцять п’ятому і сорок третьому рядках. <span class="slash">/</span> Він вбудовує графічне зображення в сторінку: <span class="slash">/</span> <code>src</code> вказує шлях до файлу, <code>alt</code> — альтернативний текст, <span class="slash">/</span> <code>width</code> і <code>height</code> задають розміри, <span class="slash">/</span> а <code>loading="lazy"</code> вмикає ліниве завантаження фотографій нижче по сторінці.</p>
+                <p>Третій приклад — тег <code>&lt;iframe&gt;</code> на п’ятдесят першому рядку. <span class="slash">/</span> Він вбудовує інший HTML-документ <code>process.html</code> <span class="slash">/</span> як окремий вкладений фрейм усередині сторінки, <span class="slash">/</span> а атрибут <code>title</code> описує його призначення.</p>
+            </div>
+        </section>
+
+        <section class="card" data-step="s43-2">
+            <div class="card-head">
+                <div>
+                    <span class="req-tag">Пункт 4.3.2</span>
+                    <h2>Аргументація вибору формату зображень + інші формати</h2>
+                </div>
+                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> Залишаєшся на <code>activities.html</code>, водиш курсором по <code>logo.svg</code> (рядок 11) і <code>energy.jpg</code> (рядок 26).
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо</span>
+                <p>Аргументую вибір формату зображень. <span class="slash">/</span> Для ілюстративних фотографій напрямів — <code>energy.jpg</code>, <code>industry.jpg</code>, <code>city.jpg</code> — <span class="slash">/</span> використано формат JPEG, <span class="slash">/</span> бо він стискає зображення з втратами, оптимізовано саме для фото з плавними переходами кольорів: <span class="slash">/</span> це дає малий розмір файлу при хорошій візуальній якості.</p>
+                <p>А для логотипа на одинадцятому рядку обрано формат SVG — <span class="slash">/</span> це векторна графіка на базі XML, <span class="slash">/</span> вона мало важить і не втрачає чіткості при будь-якому масштабуванні.</p>
+                <p>Інші формати зображень, які я знаю: <span class="slash">/</span> PNG — растровий формат зі стисненням без втрат та підтримкою прозорості, ідеальний для схем і скріншотів; <span class="slash">/</span> GIF — формат для простих анімацій із палітрою до 256 кольорів; <span class="slash">/</span> WebP — сучасний формат, що підтримує стиснення і з втратами, і без втрат, прозорість і анімацію; <span class="slash">/</span> та AVIF — новітній формат на базі відеокодека AV1 із ще кращим стисненням.</p>
+            </div>
+        </section>
+
+        <div id="sec-4-4" class="section-divider">4.4. Сторінка «Зворотній зв’язок» — feedback.html</div>
+
+        <section class="card" data-step="s44-1">
+            <div class="card-head">
+                <div>
+                    <span class="req-tag">Пункт 4.4.1</span>
+                    <h2>Основні теги форми + характеристика 5 з них</h2>
+                </div>
+                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> Перемикаєшся на вкладку <code>feedback.html</code> у VS Code. Курсор на рядку 23 і нижче по формі.
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо</span>
+                <p>Переходимо до третьої сторінки — <span class="slash">/</span> файлу <code>feedback.html</code>, «Зворотній зв’язок».</p>
+                <p>Основні теги для реалізації форми в моєму коді: <span class="slash">/</span> <code>&lt;form&gt;</code>, <code>&lt;fieldset&gt;</code>, <code>&lt;legend&gt;</code>, <code>&lt;label&gt;</code>, <code>&lt;input&gt;</code>, <span class="slash">/</span> <code>&lt;select&gt;</code>, <code>&lt;option&gt;</code>, <code>&lt;textarea&gt;</code> та <code>&lt;button&gt;</code>.</p>
+                <p>Охарактеризую п’ять із них детально.</p>
+                <p>Перший — <code>&lt;form&gt;</code> на двадцять третьому рядку: <code>&lt;form id="feedback-form"&gt;</code>. <span class="slash">/</span> Це кореневий контейнер форми. Атрибут <code>id</code> дозволяє в скрипті <code>form.js</code> прив’язати обробники подій.</p>
+                <p>Другий — <code>&lt;fieldset&gt;</code> на двадцять четвертому рядку разом із <code>&lt;legend&gt;</code> на двадцять п’ятому. <span class="slash">/</span> <code>&lt;fieldset&gt;</code> візуально й логічно групує поля персональної інформації в рамку, <span class="slash">/</span> а <code>&lt;legend&gt;</code> задає заголовок цієї рамки.</p>
+                <p>Третій — <code>&lt;label&gt;</code>, наприклад на двадцять сьомому рядку: <code>&lt;label for="full-name"&gt;</code>. <span class="slash">/</span> Він створює підпис до поля. Атрибут <code>for</code> збігається з <code>id</code> відповідного поля, <span class="slash">/</span> тому клік по тексту підпису переводить фокус у поле.</p>
+                <p>Четвертий — <code>&lt;input&gt;</code> на двадцять восьмому рядку: <span class="slash">/</span> <code>&lt;input type="text" id="full-name" name="full_name" autocomplete="name" maxlength="100" required&gt;</code>. <span class="slash">/</span> <code>type</code> визначає тип поля, <code>name</code> — ім’я даних при відправленні, <span class="slash">/</span> <code>autocomplete</code> допомагає браузеру підставити збережене ім’я, <span class="slash">/</span> <code>maxlength="100"</code> обмежує кількість символів, а <code>required</code> робить поле обов’язковим. <span class="slash">/</span> А на тридцять шостому рядку в числовому <code>&lt;input&gt;</code> для віку використано обмеження <code>min="1"</code> і <code>max="120"</code>.</p>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> Скролиш до рядка 61 (<code>&lt;textarea&gt;</code>).
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо</span>
+                <p>П’ятий — <code>&lt;textarea&gt;</code> на шістдесят першому рядку: <span class="slash">/</span> <code>&lt;textarea id="details" name="details" rows="6" cols="45" maxlength="1000" required&gt;</code>. <span class="slash">/</span> Це багаторядкове поле введення. <span class="slash">/</span> <code>rows="6"</code> і <code>cols="45"</code> задають базові розміри у рядках і символах, <span class="slash">/</span> <code>maxlength="1000"</code> обмежує текст тисячею символів, <span class="slash">/</span> а <code>required</code> вимагає заповнення.</p>
+            </div>
+        </section>
+
+        <section class="card" data-step="s44-2">
+            <div class="card-head">
+                <div>
+                    <span class="req-tag">Пункт 4.4.2</span>
+                    <h2>Усі значення атрибуту type у &lt;input&gt;</h2>
+                </div>
+                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> Показуєш по черзі рядки 28, 32, 36 і 64 у <code>feedback.html</code>.
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо</span>
+                <p>Перелічу всі значення атрибуту <code>type</code> в елементі <code>&lt;input&gt;</code>, використані в коді: <span class="slash">/</span> на двадцять восьмому рядку — <code>type="text"</code> для введення ПІБ; <span class="slash">/</span> на тридцять другому — <code>type="email"</code> для пошти з перевіркою формату; <span class="slash">/</span> на тридцять шостому — <code>type="number"</code> для введення віку; <span class="slash">/</span> і на шістдесят четвертому рядку — <code>type="checkbox"</code> для прапорця згоди на обробку інформації. <span class="slash">/</span> Отже, чотири типи: <code>text</code>, <code>email</code>, <code>number</code> та <code>checkbox</code>.</p>
+            </div>
+        </section>
+
+        <section class="card" data-step="s44-3">
+            <div class="card-head">
+                <div>
+                    <span class="req-tag">Пункт 4.4.3</span>
+                    <h2>Реалізація кнопок (теги, атрибути, значення)</h2>
+                </div>
+                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> Курсор на рядках 66–67 у <code>feedback.html</code>.
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо</span>
+                <p>Кнопки реалізовано на рядках шістдесят шість і шістдесят сім парним тегом <code>&lt;button&gt;</code>.</p>
+                <p>На шістдесят шостому рядку: <code>&lt;button type="submit"&gt;Відправити&lt;/button&gt;</code>. <span class="slash">/</span> Атрибут <code>type</code> зі значенням <code>"submit"</code> запускає вбудовану перевірку форми <span class="slash">/</span> і генерує подію відправлення.</p>
+                <p>На шістдесят сьомому рядку: <code>&lt;button type="reset"&gt;Очистити&lt;/button&gt;</code>. <span class="slash">/</span> Атрибут <code>type</code> зі значенням <code>"reset"</code> очищує форму <span class="slash">/</span> і повертає всім полям початкові значення.</p>
+            </div>
+        </section>
+
+        <section class="card" data-step="s44-4">
+            <div class="card-head">
+                <div>
+                    <span class="req-tag">Пункт 4.4.4</span>
+                    <h2>2 логічні атрибути та 2 атрибути зі значенням</h2>
+                </div>
+                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> Показуєш рядок 28 (<code>required</code>), рядок 8 (<code>defer</code>), рядок 61 (<code>maxlength="1000"</code>) і рядок 32 (<code>type="email"</code>).
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо</span>
+                <p>Покажу в коді два логічні, тобто булеві атрибути, <span class="slash">/</span> для яких не потрібно вказувати значення — сама їх присутність означає «істина». <span class="slash">/</span> Перший — атрибут <code>required</code> у полях форми, наприклад на рядку двадцять вісім, він робить поле обов’язковим. <span class="slash">/</span> Другий — атрибут <code>defer</code> на восьмому рядку в тегу <code>&lt;script src="form.js" defer&gt;</code>: <span class="slash">/</span> він відкладає виконання скрипту до завершення розбору HTML.</p>
+                <p>І два атрибути зі значенням: <span class="slash">/</span> перший — <code>maxlength="1000"</code> на шістдесят першому рядку, що обмежує довжину тексту, <span class="slash">/</span> і другий — <code>type="email"</code> на тридцять другому рядку, або <code>min="1"</code> і <code>max="120"</code> на тридцять шостому.</p>
+            </div>
+        </section>
+
+        <div id="sec-4-5" class="section-divider">4.5. Контрольні теоретичні питання</div>
+
+        <section class="card" data-step="s45">
+            <div class="card-head">
+                <div>
+                    <span class="req-tag">Пункт 4.5</span>
+                    <h2>Фронтенд-розробка; рядкові та блокові елементи + приклади</h2>
+                </div>
+                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
+            </div>
+            <div class="act">
+                <strong>[ДІЯ]</strong> Можеш тримати відкритим <code>index.html</code> (рядки 27–30, де є і <code>&lt;p&gt;</code>, і <code>&lt;span&gt;</code>, <code>&lt;b&gt;</code>, <code>&lt;i&gt;</code>, <code>&lt;em&gt;</code>, <code>&lt;u&gt;</code>) і відповідати на камеру.
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо — Питання 1: Що таке фронтенд-розробка?</span>
+                <p>Фронтенд-розробка — це створення клієнтської частини вебсайту або вебзастосунку, <span class="slash">/</span> з якою користувач безпосередньо взаємодіє у браузері. <span class="slash">/</span> Її основа — три технології: <span class="slash">/</span> HTML задає структуру та семантику контенту, <span class="slash">/</span> CSS відповідає за зовнішній вигляд і розташування елементів, <span class="slash">/</span> а JavaScript забезпечує інтерактивність та динамічну логіку на боці клієнта.</p>
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо — Питання 2: Різниця між рядковими та блоковими елементами</span>
+                <p>Блокові елементи завжди починаються з нового рядка <span class="slash">/</span> і за замовчуванням займають всю доступну ширину батьківського контейнера. <span class="slash">/</span> Їм можна задавати ширину, висоту та будь-які зовнішні й внутрішні відступи, <span class="slash">/</span> і вони можуть містити в собі як інші блокові, так і рядкові елементи.</p>
+                <p>Рядкові елементи не створюють переносу рядка <span class="slash">/</span> і розташовуються один за одним у межах поточного рядка тексту. <span class="slash">/</span> Вони займають лише ширину свого вмісту, <span class="slash">/</span> ігнорують властивості ширини й висоти <span class="slash">/</span> і зазвичай містять лише текст або інші рядкові елементи.</p>
+            </div>
+            <div class="say">
+                <span class="say-label">🗣️ Диктувати в ухо — Питання 3: Приклади з нашого коду</span>
+                <p>Приклади блокових елементів із моєї роботи: <span class="slash">/</span> <code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;article&gt;</code>, <code>&lt;section&gt;</code>, <code>&lt;footer&gt;</code>, <span class="slash">/</span> заголовки <code>&lt;h1&gt;</code>–<code>&lt;h3&gt;</code>, абзац <code>&lt;p&gt;</code>, списки <code>&lt;ol&gt;</code> і <code>&lt;ul&gt;</code>, таблиця <code>&lt;table&gt;</code> та форма <code>&lt;form&gt;</code>.</p>
+                <p>Приклади рядкових елементів із моєї роботи — <span class="slash">/</span> на тридцятому рядку головної сторінки це <code>&lt;span&gt;</code>, <code>&lt;b&gt;</code>, <code>&lt;i&gt;</code>, <code>&lt;em&gt;</code>, <code>&lt;u&gt;</code>, <span class="slash">/</span> а також посилання <code>&lt;a&gt;</code>, підписи <code>&lt;label&gt;</code> і розрив рядка <code>&lt;br&gt;</code>.</p>
+                <p>На цьому мій захист лабораторної роботи номер один завершено. <span class="slash">/</span> Дякую за увагу!</p>
+            </div>
+            <div class="act">
+                <strong>[ФІНАЛ]</strong> Зупиняєш запис. За бажанням можеш відкотити дві навчальні правки в <code>index.html</code> (або залишити — вони валідні), головне — завантажити відео на Google Диск <code>@knu.ua</code> і здати в Classroom!
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const STORAGE_KEY = 'lab1_defense_checks_v1';
+        const FONT_KEY = 'lab1_defense_font_v1';
+
+        const savedFont = localStorage.getItem(FONT_KEY);
+        if (savedFont) {
+            document.documentElement.style.setProperty('--font-size', savedFont + 'px');
+        }
+
+        function changeFont(delta) {
+            const current = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--font-size'), 10) || 18;
+            const next = Math.min(28, Math.max(13, current + delta));
+            document.documentElement.style.setProperty('--font-size', next + 'px');
+            localStorage.setItem(FONT_KEY, String(next));
+        }
+
+        const cards = Array.from(document.querySelectorAll('.card[data-step]'));
+        const savedChecks = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+
+        function updateProgress() {
+            const total = cards.length;
+            const done = cards.filter(c => c.querySelector('.step-check').checked).length;
+            document.getElementById('progress-text').textContent = `Пройдено ${done} з ${total} кроків`;
+            document.getElementById('progress-fill').style.width = `${Math.round((done / total) * 100)}%`;
+        }
+
+        cards.forEach(card => {
+            const key = card.dataset.step;
+            const cb = card.querySelector('.step-check');
+            if (savedChecks[key]) {
+                cb.checked = true;
+                card.classList.add('done');
+            }
+            cb.addEventListener('change', () => {
+                savedChecks[key] = cb.checked;
+                card.classList.toggle('done', cb.checked);
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(savedChecks));
+                updateProgress();
+            });
+        });
+        updateProgress();
+
+        function resetProgress() {
+            cards.forEach(card => {
+                card.querySelector('.step-check').checked = false;
+                card.classList.remove('done');
+            });
+            localStorage.removeItem(STORAGE_KEY);
+            updateProgress();
+        }
+
+        let seconds = 0;
+        let interval = null;
+        const timerEl = document.getElementById('timer');
+        const timerBtn = document.getElementById('timer-btn');
+
+        function renderTimer() {
+            const m = String(Math.floor(seconds / 60)).padStart(2, '0');
+            const s = String(seconds % 60).padStart(2, '0');
+            timerEl.textContent = `${m}:${s} / 20:00`;
+            timerEl.classList.toggle('warn', seconds >= 15 * 60);
+        }
+
+        function toggleTimer() {
+            if (interval) {
+                clearInterval(interval);
+                interval = null;
+                timerBtn.textContent = 'Продовжити';
+            } else {
+                interval = setInterval(() => {
+                    seconds++;
+                    renderTimer();
+                }, 1000);
+                timerBtn.textContent = 'Пауза';
+            }
+        }
+
+        function resetTimer() {
+            if (interval) {
+                clearInterval(interval);
+                interval = null;
+            }
+            seconds = 0;
+            timerBtn.textContent = 'Старт';
+            renderTimer();
+        }
+
+        function copyCode(btn) {
+            const code = btn.nextElementSibling.textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const old = btn.textContent;
+                btn.textContent = 'Скопійовано';
+                setTimeout(() => { btn.textContent = old; }, 1200);
+            });
+        }
+    </script>
+</body>
+</html>
