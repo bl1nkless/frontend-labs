@@ -3,22 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Суфлер захисту ЛР №2 — Варіант 6 (ОБРІЙ)</title>
+    <title>Суфлер — ЛР №2 — Стилізація CSS (Grid, Flex)</title>
     <style>
         :root {
-            --bg: #0f172a;
-            --surface: #1e293b;
-            --surface-2: #263348;
-            --border: #334155;
-            --text: #f1f5f9;
+            --bg: #0b1120;
+            --surface: #162033;
+            --border: #2b3b55;
+            --text: #f8fafc;
             --muted: #94a3b8;
-            --say-bg: #0d2a24;
-            --say-border: #10b981;
-            --act-bg: #2a2110;
-            --act-border: #f59e0b;
-            --code-bg: #0b1120;
             --accent: #38bdf8;
-            --font-size: 18px;
+            --active-bg: #0f2f2a;
+            --active-border: #10b981;
+            --font-size: 24px;
         }
         * { box-sizing: border-box; }
         body {
@@ -27,20 +23,21 @@
             background: var(--bg);
             color: var(--text);
             font-size: var(--font-size);
-            line-height: 1.55;
-            padding-bottom: 64px;
+            line-height: 1.6;
+            padding-bottom: 50vh;
         }
         .topbar {
             position: sticky;
             top: 0;
             z-index: 50;
-            background: rgba(15, 23, 42, 0.95);
+            background: rgba(11, 17, 32, 0.96);
             backdrop-filter: blur(8px);
             border-bottom: 1px solid var(--border);
             padding: 10px 16px;
+            font-size: 15px;
         }
         .topbar-inner {
-            max-width: 920px;
+            max-width: 860px;
             margin: 0 auto;
             display: flex;
             flex-wrap: wrap;
@@ -48,19 +45,13 @@
             justify-content: space-between;
             gap: 10px;
         }
-        .title-group h1 { margin: 0; font-size: 1rem; font-weight: 700; }
-        .title-group .sub { font-size: 0.78rem; color: var(--muted); }
-        .lab-switch {
-            display: flex;
-            gap: 6px;
-            margin-top: 6px;
-            flex-wrap: wrap;
-        }
+        .title-group h1 { margin: 0; font-size: 16px; font-weight: 700; }
+        .lab-switch { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
         .lab-switch a {
             text-decoration: none;
-            font-size: 0.75rem;
+            font-size: 13px;
             font-weight: 700;
-            padding: 2px 8px;
+            padding: 3px 9px;
             border-radius: 6px;
             border: 1px solid var(--border);
             color: var(--muted);
@@ -68,7 +59,7 @@
         }
         .lab-switch a.active {
             background: var(--accent);
-            color: #0f172a;
+            color: #0b1120;
             border-color: var(--accent);
         }
         .controls {
@@ -82,149 +73,88 @@
             color: var(--text);
             border: 1px solid var(--border);
             border-radius: 8px;
-            padding: 6px 10px;
-            font-size: 0.85rem;
+            padding: 6px 11px;
+            font-size: 13px;
             cursor: pointer;
             font-weight: 600;
         }
         .btn:hover { border-color: var(--accent); }
-        .btn-accent { background: #0369a1; border-color: #0284c7; }
+        .btn-scroll.running {
+            background: #065f46;
+            border-color: #10b981;
+        }
+        .speed-wrap {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            color: var(--muted);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 4px 8px;
+            border-radius: 8px;
+        }
+        .speed-wrap input { width: 65px; cursor: pointer; }
         .timer {
             font-variant-numeric: tabular-nums;
             font-weight: 700;
-            font-size: 0.95rem;
+            font-size: 14px;
             padding: 5px 10px;
             border-radius: 8px;
-            background: var(--surface-2);
-            border: 1px solid var(--border);
-        }
-        .timer.warn { color: #fbbf24; border-color: #f59e0b; }
-        .progress-wrap {
-            max-width: 920px;
-            margin: 8px auto 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.78rem;
-            color: var(--muted);
-        }
-        .progress-bar {
-            flex: 1;
-            height: 6px;
-            background: var(--surface);
-            border-radius: 999px;
-            overflow: hidden;
-        }
-        .progress-fill {
-            height: 100%;
-            width: 0%;
-            background: var(--say-border);
-            transition: width 0.2s ease;
-        }
-        .nav-pills {
-            max-width: 920px;
-            margin: 12px auto 0;
-            padding: 0 16px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-        .nav-pills a {
-            color: var(--accent);
-            text-decoration: none;
-            font-size: 0.82rem;
             background: var(--surface);
             border: 1px solid var(--border);
-            padding: 4px 10px;
-            border-radius: 999px;
-        }
-        main { max-width: 920px; margin: 16px auto 0; padding: 0 16px; }
-        .card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 18px;
-            margin-bottom: 18px;
-        }
-        .card.done { opacity: 0.52; }
-        .card-head {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 12px;
-            margin-bottom: 12px;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 10px;
-        }
-        .card-head h2 { margin: 0; font-size: 1.12rem; color: #fff; }
-        .req-tag {
-            display: inline-block;
-            font-size: 0.72rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            color: var(--accent);
-            margin-bottom: 4px;
-        }
-        .check-label {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.82rem;
-            color: var(--muted);
             cursor: pointer;
-            user-select: none;
-            white-space: nowrap;
         }
-        .check-label input { width: 18px; height: 18px; accent-color: var(--say-border); cursor: pointer; }
-        .act {
-            background: var(--act-bg);
-            border-left: 4px solid var(--act-border);
-            border-radius: 8px;
-            padding: 10px 14px;
-            margin: 10px 0;
-            font-size: 0.92rem;
+        main {
+            max-width: 820px;
+            margin: 24px auto 0;
+            padding: 0 20px;
+        }
+        .line {
+            margin: 18px 0;
+            padding: 14px 18px;
+            border-radius: 12px;
+            background: rgba(22, 32, 51, 0.55);
+            border-left: 4px solid transparent;
+            cursor: pointer;
+            transition: opacity 0.15s, background 0.15s, border-color 0.15s;
+        }
+        .line:hover { border-left-color: var(--border); }
+        .line.prep {
+            font-size: 0.78em;
             color: #fde68a;
+            background: rgba(120, 83, 14, 0.22);
+            border-left-color: #f59e0b;
         }
-        .act strong { color: #fbbf24; }
-        .say {
-            background: var(--say-bg);
-            border-left: 4px solid var(--say-border);
-            border-radius: 8px;
-            padding: 12px 14px;
-            margin: 10px 0;
+        .line.done { opacity: 0.35; }
+        .line.current {
+            background: var(--active-bg);
+            border-left-color: var(--active-border);
+            opacity: 1;
         }
-        .say-label {
-            display: inline-block;
-            font-size: 0.72rem;
-            font-weight: 800;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            color: #34d399;
-            margin-bottom: 4px;
-        }
-        .say p { margin: 6px 0; }
-        .slash { color: #34d399; font-weight: 800; padding: 0 3px; }
         code {
             font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-            background: rgba(15, 23, 42, 0.75);
+            background: rgba(15, 23, 42, 0.85);
             color: #7dd3fc;
             padding: 1px 6px;
             border-radius: 5px;
-            font-size: 0.88em;
+            font-size: 0.86em;
             border: 1px solid #334155;
         }
-        pre {
-            background: var(--code-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 12px;
-            overflow-x: auto;
-            font-size: 0.86rem;
-            margin: 8px 0;
-            color: #e2e8f0;
+        .code-wrap {
+            position: relative;
+            margin: 14px 0;
         }
-        .code-wrap { position: relative; }
+        pre {
+            background: #060a14;
+            border: 1px solid var(--accent);
+            border-radius: 10px;
+            padding: 14px;
+            overflow-x: auto;
+            font-size: 0.78em;
+            margin: 0;
+            color: #a7f3d0;
+        }
         .copy-btn {
             position: absolute;
             top: 8px;
@@ -233,19 +163,14 @@
             color: var(--text);
             border: 1px solid var(--border);
             border-radius: 6px;
-            padding: 3px 8px;
-            font-size: 0.75rem;
+            padding: 4px 10px;
+            font-size: 12px;
             cursor: pointer;
         }
-        ul.prep { margin: 8px 0; padding-left: 20px; }
-        ul.prep li { margin: 6px 0; }
-        .section-divider {
-            margin: 28px 0 12px;
-            padding-left: 10px;
-            border-left: 4px solid var(--accent);
-            font-size: 1.25rem;
-            font-weight: 800;
-            color: #fff;
+        .sep {
+            border: 0;
+            border-top: 2px dashed var(--border);
+            margin: 32px 0;
         }
     </style>
 </head>
@@ -253,461 +178,187 @@
     <header class="topbar">
         <div class="topbar-inner">
             <div class="title-group">
-                <h1>Суфлер захисту ЛР №2 — Варіант 6 («ОБРІЙ»)</h1>
-                <div class="sub">Загорський Тарас, ІПЗ-31 (3 підгрупа) • Стилізація CSS (Grid, Flex)</div>
+                <h1>Суфлер — ЛР №2 — Стилізація CSS (Grid, Flex)</h1>
                 <div class="lab-switch">
-                    <a href="../lab1/defense.html">ЛР 1</a>
-                    <a href="../lab2/defense.html" class="active">ЛР 2</a>
-                    <a href="../lab3/defense.html">ЛР 3</a>
-                    <a href="../lab4/defense.html">ЛР 4</a>
-                    <a href="../lab5/defense.html">ЛР 5</a>
+                    <a href="../lab1/defense.html" class="">ЛР 1</a>
+<a href="../lab2/defense.html" class="active">ЛР 2</a>
+<a href="../lab3/defense.html" class="">ЛР 3</a>
+<a href="../lab4/defense.html" class="">ЛР 4</a>
+<a href="../lab5/defense.html" class="">ЛР 5</a>
                 </div>
             </div>
             <div class="controls">
+                <button id="scroll-btn" class="btn btn-scroll" onclick="toggleScroll()" title="Пробіл — старт/пауза автопрокрутки">▶ Автоскрол</button>
+                <label class="speed-wrap" title="Швидкість прокрутки">
+                    <span>Швидкість</span>
+                    <input id="speed" type="range" min="1" max="10" value="3">
+                </label>
                 <button class="btn" onclick="changeFont(-2)">A-</button>
                 <button class="btn" onclick="changeFont(2)">A+</button>
-                <span id="timer" class="timer">00:00 / 20:00</span>
-                <button id="timer-btn" class="btn btn-accent" onclick="toggleTimer()">Старт</button>
-                <button class="btn" onclick="resetTimer()">Скинути</button>
-                <button class="btn" onclick="resetProgress()">Очистити галочки</button>
+                <span id="timer" class="timer" onclick="toggleTimer()" title="Клік — старт/пауза таймера">⏱ 00:00 / 20:00</span>
+                <button class="btn" onclick="resetAll()">Скинути</button>
             </div>
-        </div>
-        <div class="progress-wrap">
-            <span id="progress-text">Пройдено 0 з 14 кроків</span>
-            <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
         </div>
     </header>
-
-    <nav class="nav-pills">
-        <a href="#prep">0. Підготовка</a>
-        <a href="#sec-4-1">4.1 Вступ</a>
-        <a href="#sec-4-2">4.2 Демо в браузері</a>
-        <a href="#sec-4-3">4.3 style.css + index.html</a>
-        <a href="#sec-4-4">4.4 activities.html</a>
-        <a href="#sec-4-5">4.5 feedback.html</a>
-        <a href="#sec-4-6">4.6–4.7 Теорія</a>
-    </nav>
-
     <main>
-        <section id="prep" class="card" data-step="prep">
-            <div class="card-head">
-                <div>
-                    <span class="req-tag">Вимоги до відеозапису (п. 1–3)</span>
-                    <h2>0. Підготовка ДО натискання «Запис»</h2>
-                </div>
-                <label class="check-label"><input type="checkbox" class="step-check"> Готово</label>
-            </div>
-            <ul class="prep">
-                <li>У VS Code відкрий 4 вкладки з папки <code>lab2</code>: <code>style.css</code>, <code>index.html</code>, <code>activities.html</code>, <code>feedback.html</code>.</li>
-                <li>Збільш шрифт у редакторі (<code>Cmd + +</code>), щоб код чітко читався.</li>
-                <li>У браузері відкрий локальний <code>lab2/index.html</code> (щоб одразу показувати зміни після збереження <code>Cmd+S</code> та <code>F5</code>/<code>Cmd+R</code>).</li>
-                <li>Увімкни вебкамеру (обличчя в кадрі весь запис, до 20 хв).</li>
-            </ul>
-        </section>
-
-        <div id="sec-4-1" class="section-divider">4.1. Представлення студента</div>
-
-        <section class="card" data-step="s41">
-            <div class="card-head">
-                <div>
-                    <span class="req-tag">Пункт 4.1</span>
-                    <h2>Представлення: ПІБ, група, підгрупа, номер роботи, варіант</h2>
-                </div>
-                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
-            </div>
-            <div class="act">
-                <strong>[ДІЯ]</strong> Дивишся в камеру, на екрані відкритий браузер із <code>lab2/index.html</code>. Друг тисне «Старт».
-            </div>
-            <div class="say">
-                <span class="say-label">🗣️ Диктувати в ухо</span>
-                <p>Доброго дня. <span class="slash">/</span> Мене звати Тарас Загорський, <span class="slash">/</span> група ІПЗ-31, <span class="slash">/</span> третя підгрупа. <span class="slash">/</span> Захищаю лабораторну роботу номер два, <span class="slash">/</span> варіант шостий — <span class="slash">/</span> стилізація промосайту корпорації «ОБРІЙ» засобами CSS.</p>
-            </div>
-        </section>
-
-        <div id="sec-4-2" class="section-divider">4.2. Демонстрація стилізованих елементів у браузері</div>
-
-        <section class="card" data-step="s42">
-            <div class="card-head">
-                <div>
-                    <span class="req-tag">Пункт 4.2</span>
-                    <h2>Показати всі стилізовані елементи на 3 сторінках</h2>
-                </div>
-                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
-            </div>
-            <div class="act">
-                <strong>[ДІЯ]</strong> У браузері показуєш <code>lab2/index.html</code>: скролиш сторінку (видно sticky-меню), скролиш блок «Мета створення», наводиш на таблицю (збільшується) і на футер (після 2с з’являється тінь тексту), виділяєш трохи тексту (помаранчеве виділення). Потім переходиш на «Напрями діяльності» (клацаєш по фото — насичується кольором) і на «Зворотній зв’язок» (вводиш некоректний email — червона рамка).
-            </div>
-            <div class="say">
-                <span class="say-label">🗣️ Диктувати в ухо</span>
-                <p>Спочатку продемонструю стилізовані елементи на всіх трьох сторінках. <span class="slash">/</span> На головній сторінці: <span class="slash">/</span> градієнтна шапка з логотипом і шрифтами Montserrat та Lora, <span class="slash">/</span> панель навігації зі зміною стилю при наведенні, <span class="slash">/</span> двоколонкова сітка <code>main</code>, <span class="slash">/</span> блок мети з кастомним скролбаром, великою першою літерою, цитатою директора та чергуванням кольору пунктів списку, <span class="slash">/</span> стрілочка біля державних посилань, <span class="slash">/</span> таблиця засновників, що плавно масштабується при наведенні, <span class="slash">/</span> і контакти внизу з відкладеною тінню тексту.</p>
-                <p>На сторінці «Напрями діяльності»: <span class="slash">/</span> фіксована шапка, адаптивна Grid-сітка з трьох карток із подвійною помаранчевою рамкою, <span class="slash">/</span> та анімація насиченості фотографій при фокусі.</p>
-                <p>На сторінці «Зворотній зв’язок»: <span class="slash">/</span> двоколонкова адаптивна Flex-форма, <span class="slash">/</span> індикація невалідного введення червоною рамкою <span class="slash">/</span> і вирівняні праворуч кнопки.</p>
-            </div>
-        </section>
-
-        <div id="sec-4-3" class="section-divider">4.3. CSS Головної сторінки (style.css + index.html)</div>
-
-        <section class="card" data-step="s43-1">
-            <div class="card-head">
-                <div>
-                    <span class="req-tag">Пункт 4.3.1</span>
-                    <h2>Не менше 5 селекторів, 2 псевдокласів і 3 псевдоелементів</h2>
-                </div>
-                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
-            </div>
-            <div class="act">
-                <strong>[ДІЯ]</strong> Перемикаєшся у VS Code на <code>lab2/style.css</code> (рядки 2, 4, 12, 36, 37, 42), а потім на <code>lab2/index.html</code> (рядки 22, 24, 36–47).
-            </div>
-            <div class="say">
-                <span class="say-label">🗣️ Диктувати в ухо</span>
-                <p>Перейдемо до CSS-коду у файлі <code>style.css</code> та внутрішніх стилів <code>index.html</code>. <span class="slash">/</span> Покажу більше п’яти різних типів селекторів.</p>
-                <p>Перший — універсальний селектор зірочка на другому рядку <code>style.css</code>: <span class="slash">/</span> він застосовує <code>box-sizing: border-box</code> до всіх елементів.</p>
-                <p>Другий — селектор тегу, наприклад <code>body</code> на четвертому рядку або <code>h2</code> на тринадцятому, <span class="slash">/</span> і третій — груповий селектор <code>h1, h2, h3, nav, button, legend</code> на дванадцятому рядку, який задає спільний шрифт.</p>
-                <p>Четвертий — селектор атрибуту <code>nav a[aria-current]</code> на тридцять сьомому рядку <code>style.css</code>, <span class="slash">/</span> який виділяє жирним активну вкладку меню.</p>
-            </div>
-            <div class="act">
-                <strong>[ДІЯ]</strong> Перемикаєшся на вкладку <code>lab2/index.html</code>, показуєш рядки 22, 24, 36, 44, 47.
-            </div>
-            <div class="say">
-                <span class="say-label">🗣️ Диктувати в ухо</span>
-                <p>У <code>index.html</code> п’ятий — селектор безпосереднього нащадка <code>main &gt; p</code> на двадцять другому рядку. <span class="slash">/</span> Шостий — селектор ідентифікатора <code>#about</code> на двадцять четвертому рядку. <span class="slash">/</span> Сьомий — селектор класу <code>.goal</code> у <code>#about .goal</code> на тридцять шостому рядку.</p>
-                <p>Тепер два псевдокласи: <span class="slash">/</span> перший — <code>:hover</code> на тридцять шостому рядку <code>style.css</code> у <code>nav a:hover</code> <span class="slash">/</span> та на п’ятдесят шостому рядку <code>index.html</code> у <code>#founders:hover</code>, який реагує на наведення курсора. <span class="slash">/</span> Другий — структурний псевдоклас <code>:nth-child(odd)</code> на сорок четвертому рядку <code>index.html</code>, <span class="slash">/</span> який підсвічує кожен непарний пункт списку.</p>
-                <p>Тепер три псевдоелементи: <span class="slash">/</span> перший — <code>::selection</code> на сорок другому рядку <code>style.css</code>, що фарбує виділений мишею текст у помаранчевий. <span class="slash">/</span> Другий — <code>::first-letter</code> на тридцять шостому рядку <code>index.html</code>, що збільшує першу літеру абзацу мети. <span class="slash">/</span> Третій — <code>::after</code> на тридцять сьомому рядку, що вставляє цитату директора після абзацу, <span class="slash">/</span> а також на сорок третьому рядку є <code>::marker</code> для стилізації римських номерів списку.</p>
-            </div>
-        </section>
-
-        <section class="card" data-step="s43-2">
-            <div class="card-head">
-                <div>
-                    <span class="req-tag">Пункт 4.3.2</span>
-                    <h2>Усі способи позиціонування + приклади + пристрої + 3 зміни</h2>
-                </div>
-                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
-            </div>
-            <div class="act">
-                <strong>[ДІЯ]</strong> Показуєш рядки 12–14 та 49–52 у <code>lab2/index.html</code> (і можна згадати рядок 11 у <code>activities.html</code>).
-            </div>
-            <div class="say">
-                <span class="say-label">🗣️ Диктувати в ухо</span>
-                <p>Назву всі п’ять значень CSS-властивості <code>position</code>:</p>
-                <p>Перше — <code>static</code>: позиціонування за замовчуванням у звичайному потоці, властивості <code>top</code>, <code>left</code> на нього не діють. <span class="slash">/</span> Друге — <code>relative</code>: зміщує елемент відносно його нормального місця, не ламаючи потік, і слугує точкою відліку для дочірніх абсолютних блоків — <span class="slash">/</span> у мене це <code>body</code> на дванадцятому рядку та <code>#founders</code> на п’ятдесят першому. <span class="slash">/</span> Третє — <code>absolute</code>: вириває елемент із потоку й позиціонує відносно найближчого позиціонованого предка — <span class="slash">/</span> у мене це <code>header</code> на тринадцятому рядку. <span class="slash">/</span> Четверте — <code>fixed</code>: фіксує елемент відносно вікна браузера незалежно від прокручування — <span class="slash">/</span> у мене це <code>header</code> на одинадцятому рядку сторінки <code>activities.html</code>. <span class="slash">/</span> П’яте — <code>sticky</code>: поводить себе як відносний блок, доки при прокручуванні не досягне межі <code>top: 0</code>, після чого прилипає — <span class="slash">/</span> це панель <code>nav</code> на чотирнадцятому рядку <code>index.html</code>.</p>
-                <p>Щодо переваг і недоліків на різних пристроях: <span class="slash">/</span> <code>fixed</code> зручний на широких десктопах для швидкого доступу до шапки, але на смартфонах із малим екраном постійно забирає корисну висоту. <span class="slash">/</span> <code>absolute</code> вимагає жорстких відступів на кшталт <code>padding-top: 8rem</code>, тому на вузькому екрані багаторядкова шапка може налізти на контент. <span class="slash">/</span> <code>sticky</code> адаптивніший для меню, але може перекриватися елементами з більшим <code>z-index</code> або не спрацювати при <code>overflow: hidden</code> у батька.</p>
-            </div>
-            <div class="act">
-                <strong>[ДІЯ — 3 ЗМІНИ В ПОЗИЦІОНУВАННІ]</strong> У <code>lab2/index.html</code> внось 3 зміни (рядки 13, 14, 51), зберігай (<code>Cmd+S</code>) і оновлюй <code>index.html</code> в браузері (<code>Cmd+R</code>):<br>
-                1) Рядок 13: <code>header { position: fixed; top: 0; }</code> (замість <code>absolute</code>)<br>
-                2) Рядок 14: <code>nav { position: sticky; top: 5.5rem; ... }</code> (замість <code>top: 0</code>)<br>
-                3) Рядок 51: додати у <code>#founders</code> <code>top: 1.5rem; left: 1rem;</code> (зміщення відносно потоку для <code>position: relative</code>)
-                <div class="code-wrap">
-                    <button class="copy-btn" onclick="copyCode(this)">Копіювати 13-14</button>
-                    <pre>        header { position: fixed; top: 0; }
-        nav { position: sticky; top: 5.5rem; z-index: 5; padding: .5rem 0; background: #f7f5f2; }</pre>
-                </div>
-            </div>
-            <div class="say">
-                <span class="say-label">🗣️ Диктувати в ухо</span>
-                <p>Внесу три зміни у код позиціонування. <span class="slash">/</span> Перша — на тринадцятому рядку змінюю для <code>header</code> <code>position: absolute</code> на <code>position: fixed</code>, щоб шапка завжди залишалась зверху. <span class="slash">/</span> Друга — на чотирнадцятому рядку для <code>nav</code> змінюю <code>top: 0</code> на <code>top: 5.5rem</code>, щоб липке меню зупинялося під фіксованою шапкою. <span class="slash">/</span> Третя — у секції <code>#founders</code>, яка має <code>position: relative</code>, додаю зміщення <code>top: 1.5rem</code> та <code>left: 1rem</code>.</p>
-            </div>
-            <div class="act">
-                <strong>[ДІЯ]</strong> Перемкнись у браузер, онови сторінку (<code>Cmd+R</code>), прокрути вниз показати фіксовану шапку + липке меню + зміщену таблицю, і повернись у VS Code. (За бажанням натисни <code>Cmd+Z</code>, щоб повернути чистий вигляд).
-            </div>
-        </section>
-
-        <section class="card" data-step="s43-3">
-            <div class="card-head">
-                <div>
-                    <span class="req-tag">Пункт 4.3.3</span>
-                    <h2>CSS смуги прокручування</h2>
-                </div>
-                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
-            </div>
-            <div class="act">
-                <strong>[ДІЯ]</strong> Курсор на рядках 28–35 у <code>lab2/index.html</code>.
-            </div>
-            <div class="say">
-                <span class="say-label">🗣️ Диктувати в ухо</span>
-                <p>Прокоментую код смуги прокручування для блоку <code>#about</code>. <span class="slash">/</span> На двадцять восьмому і двадцять дев’ятому рядках задано <code>max-height: 24rem</code> і <code>overflow-y: scroll</code> — <span class="slash">/</span> це обмежує висоту блоку та примусово додає вертикальний скролбар.</p>
-                <p>На тридцять першому рядку <code>#about::-webkit-scrollbar</code> задає ширину доріжки вісім пікселів і світло-сірий фон <code>#eee</code>. <span class="slash">/</span> На тридцять другому <code>::-webkit-scrollbar-thumb</code> фарбує повзунок у <code>darkorange</code> зі скругленням чотири пікселі. <span class="slash">/</span> А на рядках тридцять три–тридцять п’ять через правило <code>@supports not selector(::-webkit-scrollbar)</code> <span class="slash">/</span> задано стандартні властивості для Firefox: <code>scrollbar-width: thin</code> і <code>scrollbar-color: darkorange #eee</code>.</p>
-            </div>
-        </section>
-
-        <section class="card" data-step="s43-4">
-            <div class="card-head">
-                <div>
-                    <span class="req-tag">Пункт 4.3.4</span>
-                    <h2>CSS інтерактивних елементів</h2>
-                </div>
-                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
-            </div>
-            <div class="act">
-                <strong>[ДІЯ]</strong> Показуєш рядки 34–36 у <code>style.css</code> та рядки 54–56, 62–63 у <code>index.html</code>.
-            </div>
-            <div class="say">
-                <span class="say-label">🗣️ Диктувати в ухо</span>
-                <p>Інтерактивні елементи в мене налаштовані так. <span class="slash">/</span> У <code>style.css</code> на тридцять четвертому рядку посилання <code>nav a</code> мають плавний перехід <code>transition</code> на три десяті секунди, <span class="slash">/</span> а на тридцять шостому в стані <code>:hover</code> змінюють фон, колір тексту, рамку і додають тінь <code>box-shadow</code>.</p>
-                <p>У <code>index.html</code> на п’ятдесят четвертому рядку секція <code>#founders</code> має <code>transition: transform .4s</code>, <span class="slash">/</span> а при <code>:hover</code> збільшується через <code>transform: scale(1.05)</code>. <span class="slash">/</span> І тег <code>address</code> на шістдесят третьому рядку при наведенні отримує помаранчеву тінь тексту <code>text-shadow</code> із затримкою дві секунди — <code>transition-delay: 2s</code>.</p>
-            </div>
-        </section>
-
-        <section class="card" data-step="s43-5">
-            <div class="card-head">
-                <div>
-                    <span class="req-tag">Пункт 4.3.5</span>
-                    <h2>Використані значення display + невикористані</h2>
-                </div>
-                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
-            </div>
-            <div class="act">
-                <strong>[ДІЯ]</strong> Показуєш <code>display: flex</code> (`style.css:27`), `display: grid` (`index.html:17`), `display: block` (`index.html:39`), `display: inline-block` (`index.html:46`).
-            </div>
-            <div class="say">
-                <span class="say-label">🗣️ Диктувати в ухо</span>
-                <p>У своєму CSS-коді я використав такі значення властивості <code>display</code>: <span class="slash">/</span> <code>flex</code> у меню <code>nav</code> для гнучкого розташування кнопок в рядок; <span class="slash">/</span> <code>grid</code> у <code>main</code> для побудови двоколонкової сітки макета; <span class="slash">/</span> <code>block</code> у псевдоелементі <code>::after</code>, щоб цитата директора переносилася на новий рядок; <span class="slash">/</span> та <code>inline-block</code> у блоці <code>aside</code>.</p>
-                <p>Інші можливі значення <code>display</code>, які не використані в моєму CSS: <span class="slash">/</span> <code>none</code> (повністю приховує елемент), <code>inline</code>, <code>inline-flex</code>, <code>inline-grid</code>, <code>table</code>, <code>flow-root</code> та <code>contents</code>.</p>
-            </div>
-        </section>
-
-        <div id="sec-4-4" class="section-divider">4.4. Сторінка 2 — activities.html</div>
-
-        <section class="card" data-step="s44-1">
-            <div class="card-head">
-                <div>
-                    <span class="req-tag">Пункт 4.4.1</span>
-                    <h2>CSS анімації</h2>
-                </div>
-                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
-            </div>
-            <div class="act">
-                <strong>[ДІЯ]</strong> Перемикаєшся у VS Code на <code>lab2/activities.html</code>, рядки 33–37.
-            </div>
-            <div class="say">
-                <span class="say-label">🗣️ Диктувати в ухо</span>
-                <p>Переходимо до другої сторінки — <code>activities.html</code>. <span class="slash">/</span> На рядках з тридцять третього по тридцять сьомий реалізована CSS-анімація.</p>
-                <p>Правило <code>.directions img:focus</code> спрацьовує при фокусі на фотографії — натисканні або переході клавішею Tab: <span class="slash">/</span> задає контур <code>outline: 3px solid darkorange</code> <span class="slash">/</span> і запускає властивість <code>animation: saturate 1s forwards</code> — <span class="slash">/</span> тобто анімація з назвою <code>saturate</code> триває одну секунду, а значення <code>forwards</code> фіксує її кінцевий стан.</p>
-                <p>Нижче директива <code>@keyframes saturate</code> описує кадри: <span class="slash">/</span> від початкового <code>from { filter: saturate(100%); }</code> <span class="slash">/</span> до кінцевого <code>to { filter: saturate(200%); }</code> — зображення стає вдвічі насиченішим.</p>
-            </div>
-        </section>
-
-        <section class="card" data-step="s44-2">
-            <div class="card-head">
-                <div>
-                    <span class="req-tag">Пункт 4.4.2</span>
-                    <h2>Grid-контейнер (.directions) + 3 зміни в код і показ</h2>
-                </div>
-                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
-            </div>
-            <div class="act">
-                <strong>[ДІЯ]</strong> Курсор на рядках 13–20 у <code>lab2/activities.html</code>.
-            </div>
-            <div class="say">
-                <span class="say-label">🗣️ Диктувати в ухо</span>
-                <p>На рядках з тринадцятого по двадцятий описано Grid-контейнер <code>.directions</code>. <span class="slash">/</span> <code>display: grid</code> перетворює список на сітку. <span class="slash">/</span> <code>grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr))</code> автоматично підбирає кількість колонок шириною мінімум шістнадцять <code>rem</code> із рівномірним розтягуванням на вільний простір. <span class="slash">/</span> <code>grid-auto-rows: auto</code> задає автоматичну висоту рядків. <span class="slash">/</span> А <code>gap: 1.5rem</code> встановлює проміжки між картками.</p>
-            </div>
-            <div class="act">
-                <strong>[ДІЯ — 3 ЗМІНИ В GRID-КОНТЕЙНЕРІ]</strong> У правилі <code>.directions</code> (рядки 15–17) внось 3 зміни, зберігай (<code>Cmd+S</code>) і відкрий <code>activities.html</code> в браузері (<code>Cmd+R</code>):
-                <div class="code-wrap">
-                    <button class="copy-btn" onclick="copyCode(this)">Копіювати</button>
-                    <pre>            grid-template-columns: repeat(2, 1fr);
+        <p class="line prep" onclick="markActive(this)">*(Перед початком запису відкрий у VS Code чотири вкладки з папки <code>lab2</code>: <code>style.css</code>, <code>index.html</code>, <code>activities.html</code>, <code>feedback.html</code>, а у браузері — <code>lab2/index.html</code>. На початку тримай відкритим браузер і просто читай текст поспіль).*</p>
+            <hr class="sep">
+            <p class="line" onclick="markActive(this)">Доброго дня. Мене звати Тарас Загорський, я студент групи ІПЗ-31, третя підгрупа.</p>
+            <p class="line" onclick="markActive(this)">Сьогодні я захищаю лабораторну роботу номер два, варіант шостий — це каскадні таблиці стилів CSS для промосайту корпорації «ОБРІЙ».</p>
+            <p class="line" onclick="markActive(this)">Спочатку продемонструю у браузері всі елементи, які були стилізовані протягом виконання роботи.</p>
+            <p class="line" onclick="markActive(this)">Зараз на екрані відкрита головна сторінка <code>index.html</code>:<br>вгорі бачимо шапку з лінійним градієнтом, обтіканням логотипа зліва та підключеними шрифтами Montserrat і Lora;<br>під нею розташоване навігаційне меню, яке при прокручуванні сторінки вниз прилипає до верхнього краю вікна, а при наведенні курсора кнопки плавно змінюють колір і отримують тінь;<br>основна частина побудована двоколонковою сіткою CSS Grid;<br>у лівому блоці «Мета створення корпорації» бачимо власну кастомну смугу прокручування помаранчевого кольору, збільшену першу літеру першого абзацу, додану через псевдоелемент цитату директора з емодзі, а у списку завдань — помаранчеві римські цифри і чергування фону непарних рядків;<br>у правому блоці «Корисні ресурси» біля посилань на державні сайти автоматично додана стрілочка;<br>нижче розташована таблиця засновників, яка при наведенні миші плавно збільшується;<br>у підвалі сторінки при затримці курсора на дві секунди на адресі з’являється помаранчева тінь тексту, а якщо виділити будь-який текст мишею — фон виділення стає помаранчевим.</p>
+            <p class="line" onclick="markActive(this)">Тепер у браузері переходжу на вкладку «Напрями діяльності»:<br>тут шапка зафіксована зверху екрана, три картки напрямів вирівняні адаптивною сіткою Grid з подвійною помаранчевою рамкою, а якщо клікнути на будь-яку фотографію, щоб вона отримала фокус, — спрацьовує CSS-анімація підвищення насиченості кольорів.</p>
+            <p class="line" onclick="markActive(this)">Тепер у браузері переходжу на вкладку «Зворотній зв’язок»:<br>тут форма зверстана за допомогою Flexbox у дві колонки, кнопки притиснуті праворуч унизу, а якщо почати вводити некоректний імейл — поле одразу підсвічується червоною рамкою.</p>
+            <hr class="sep">
+            <p class="line" onclick="markActive(this)">Тепер перемикаюсь у редактор коду VS Code на вкладку <code>style.css</code> та <code>index.html</code> і прокоментую стилі головної сторінки.</p>
+            <p class="line" onclick="markActive(this)">Спочатку продемонструю використання щонайменше п’яти різних селекторів, двох псевдокласів і трьох псевдоелементів.</p>
+            <p class="line" onclick="markActive(this)">У файлі <code>style.css</code> на другому рядку бачимо перший селектор — це універсальний селектор зірочка <code>*</code>, який встановлює <code>box-sizing: border-box</code> для всіх елементів сторінки.</p>
+            <p class="line" onclick="markActive(this)">На четвертому рядку другий селектор — це селектор тегу <code>body</code>, який задає базові відступи, шрифт і світлий фон сторінки.</p>
+            <p class="line" onclick="markActive(this)">На дванадцятому рядку третій селектор — це груповий селектор переліку тегів <code>h1, h2, h3, nav, button, legend</code>, який одним правилом призначає їм шрифт Montserrat.</p>
+            <p class="line" onclick="markActive(this)">На двадцять третьому рядку четвертий селектор — це селектор нащадка <code>header img</code>, який стилізує лише зображення всередині шапки.</p>
+            <p class="line" onclick="markActive(this)">На тридцять сьомому рядку п’ятий селектор — це селектор атрибуту <code>nav a[aria-current]</code>, який виділяє напівжирним активну сторінку меню.</p>
+            <p class="line" onclick="markActive(this)">Перемикаюсь на вкладку <code>index.html</code> у блок внутрішніх стилів <code>&lt;style&gt;</code>:<br>тут на двадцять другому рядку бачимо шостий селектор — дочірній селектор <code>main &gt; p</code>, на двадцять четвертому рядку сьомий — селектор ідентифікатора <code>#about</code>, а на тридцять шостому рядку восьмий — селектор класу <code>.goal</code>.</p>
+            <p class="line" onclick="markActive(this)">Тепер покажу два псевдокласи:<br>перший псевдоклас — це <code>:hover</code>, наприклад на پ’ятдесят шостому рядку <code>index.html</code> у правилі <code>#founders:hover</code> та на шістдесят третьому рядку в <code>address:hover</code>, який спрацьовує при наведенні курсора миші;<br>другий псевдоклас — це структурний псевдоклас <code>:nth-child(odd)</code> на сорок четвертому рядку в правилі <code>ol li:nth-child(odd)</code>, який зафарбовує кожен непарний пункт списку.</p>
+            <p class="line" onclick="markActive(this)">Тепер покажу три псевдоелементи у цьому ж блоці стилів <code>index.html</code>:<br>перший — на тридцять шостому рядку <code>::first-letter</code> у правилі <code>#about .goal::first-letter</code>, який збільшує вдвічі та фарбує в помаранчевий першу літеру абзацу;<br>другий — на тридцять сьомому рядку <code>::after</code> у правилі <code>#about .goal::after</code>, який генерує текстовий блок із цитатою директора після абзацу, і також <code>::after</code> на сорок сьомому рядку додає символ стрілочки до посилань на державні сайти;<br>третій — на сорок третьому рядку <code>::marker</code> у правилі <code>ol[type=&quot;I&quot;] li::marker</code>, який стилізує римські цифри маркерів списку, а у <code>style.css</code> на сорок другому рядку також використано псевдоелемент <code>::selection</code> для стилізації виділеного тексту.</p>
+            <hr class="sep">
+            <p class="line" onclick="markActive(this)">Далі наведу всі можливі способи позиціонування елементів на сторінці, покажу приклади зі свого коду, охарактеризую їх на різних пристроях і внесу три зміни у код.</p>
+            <p class="line" onclick="markActive(this)">У CSS існує п’ять значень властивості <code>position</code>:<br>Перше — <code>static</code>, це стандартне позиціонування за замовчуванням у нормальному потоці документа.<br>Друге — <code>relative</code>, відносне позиціонування: елемент залишається в потоці, але може зміщуватися відносно свого початкового місця і стає точкою відліку для вкладених абсолютних елементів. У моєму коді <code>index.html</code> це <code>body</code> на дванадцятому рядку та секція <code>#founders</code> на п’ятдесят першому рядку.<br>Третє — <code>absolute</code>, абсолютне позиціонування: елемент виривається із загального потоку і прив’язується до координат найближчого позиціонованого предка. У мене це <code>header</code> на тринадцятому рядку <code>index.html</code> із властивістю <code>top: 0</code>.<br>Четверте — <code>fixed</code>, фіксоване позиціонування: елемент прив’язується до вікна браузера і залишається на місці під час прокручування. У моєму коді це <code>header</code> на одинадцятому рядку другої сторінки <code>activities.html</code>.<br>І п’яте — <code>sticky</code>, липке позиціонування: елемент рухається разом зі сторінкою, доки не досягне заданої межі, наприклад <code>top: 0</code>, після чого фіксується. У мене так реалізована навігація <code>nav</code> на чотирнадцятому рядку <code>index.html</code>. Також у <code>style.css</code> на двадцять третьому рядку використано обтікання логотипа через <code>float: left</code>.</p>
+            <p class="line" onclick="markActive(this)">Щодо переваг і недоліків на різних пристроях:<br>на великих моніторах <code>fixed</code> і <code>sticky</code> зручні тим, що шапка або меню завжди під рукою, але на смартфонах із маленьким екраном фіксована шапка постійно перекриває частину контенту;<br>а при <code>absolute</code> потрібно вручну резервувати місце через <code>padding-top</code>, і коли на вузькому екрані телефона заголовок переноситься у два рядки, шапка стає вищою і може налізти на текст нижче.</p>
+            <p class="line" onclick="markActive(this)">Тепер внесу три зміни у код позиціонування в <code>index.html</code> на рядках тринадцять, чотирнадцять та п’ятдесят один.</p>
+            <p class="line" onclick="markActive(this)">Перша зміна — на тринадцятому рядку для <code>header</code> змінюю <code>position: absolute</code> на <code>position: fixed</code>:</p>
+            <div class="code-wrap"><button class="copy-btn" onclick="copyCode(this)">Копіювати в буфер</button><pre>        header { position: fixed; top: 0; }</pre></div>
+            <p class="line" onclick="markActive(this)">Друга зміна — на чотирнадцятому рядку для <code>nav</code> змінюю <code>top: 0</code> на <code>top: 5.5rem</code>, щоб липке меню фіксувалося під шапкою, а не перекривалося нею:</p>
+            <div class="code-wrap"><button class="copy-btn" onclick="copyCode(this)">Копіювати в буфер</button><pre>        nav { position: sticky; top: 5.5rem; z-index: 5; padding: .5rem 0; background: #f7f5f2; }</pre></div>
+            <p class="line" onclick="markActive(this)">Третя зміна — на п’ятдесят першому рядку у блоці <code>#founders</code> до <code>position: relative</code> додаю зсув <code>top: 1.5rem; left: 1rem;</code>:</p>
+            <div class="code-wrap"><button class="copy-btn" onclick="copyCode(this)">Копіювати в буфер</button><pre>            position: relative;
+            top: 1.5rem;
+            left: 1rem;</pre></div>
+            <p class="line" onclick="markActive(this)">Натискаю <code>Cmd+S</code>, перемикаюсь у браузер, оновлюю головну сторінку і прокручую вниз — бачимо, що шапка тепер зафіксована, меню прилипає рівно під нею, а таблиця змістилася вправо і вниз. Повертаюсь у редактор і натискаю <code>Cmd+Z</code> та <code>Cmd+S</code>, щоб повернути початкове положення.</p>
+            <hr class="sep">
+            <p class="line" onclick="markActive(this)">Тепер прокоментую CSS-код смуги прокручування на рядках з двадцять восьмого по тридцять п’ятий у файлі <code>index.html</code>.</p>
+            <p class="line" onclick="markActive(this)">Для блоку <code>#about</code> задано максимальну висоту <code>max-height: 24rem</code> та примусову вертикальну прокрутку <code>overflow-y: scroll</code>.<br>На тридцять першому рядку псевдоелемент <code>#about::-webkit-scrollbar</code> задає ширину смуги прокручування вісім пікселів та світло-сірий фон доріжки <code>#eee</code>.<br>На тридцять другому рядку <code>#about::-webkit-scrollbar-thumb</code> задає для повзунка колір <code>darkorange</code> та заокруглення кутів <code>border-radius: 4px</code>.<br>А на рядках тридцять три–тридцять п’ять директива <code>@supports not selector(::-webkit-scrollbar)</code> підключає резервні стандартні властивості для браузера Firefox — <code>scrollbar-width: thin</code> та <code>scrollbar-color: darkorange #eee</code>.</p>
+            <p class="line" onclick="markActive(this)">Тепер прокоментую CSS-код інтерактивних елементів.</p>
+            <p class="line" onclick="markActive(this)">У файлі <code>style.css</code> на рядках тридцять чотири–тридцять шість для посилань навігації <code>nav a</code> задано плавний перехід <code>transition</code> тривалістю три десяті секунди для фону, кольору, тіні й рамки, а у стані <code>:hover</code> змінюється фон на темно-синій <code>#1f2a36</code>, текст стає білим і додається тінь <code>box-shadow</code>.<br>А у файлі <code>index.html</code> на рядках п’ятдесят чотири–п’ятдесят шість блок таблиці <code>#founders</code> має <code>transition: transform .4s</code> і при наведенні збільшується через <code>transform: scale(1.05)</code>, а на рядках шістдесят два–шістдесят три блок контактів <code>address</code> при наведенні отримує помаранчеву тінь тексту <code>text-shadow</code> із затримкою <code>transition-delay: 2s</code>.</p>
+            <p class="line" onclick="markActive(this)">Тепер прокоментую використані значення властивості <code>display</code> та назву інші можливі значення.</p>
+            <p class="line" onclick="markActive(this)">У моїй роботі використані чотири значення властивості <code>display</code>:<br><code>display: flex</code> — у файлі <code>style.css</code> на двадцять сьомому рядку для меню <code>nav</code> та на сторінці форми;<br><code>display: grid</code> — у файлі <code>index.html</code> на сімнадцятому рядку для <code>main</code> та на сторінці напрямів;<br><code>display: block</code> — на тридцять дев’ятому рядку <code>index.html</code> для виведення згенерованої цитати з нового рядка;<br>та <code>display: inline-block</code> — на сорок шостому рядку <code>index.html</code> для бічної панелі <code>aside</code>.<br>Інші можливі значення <code>display</code>, які я не використовував у CSS-коді: <code>none</code>, <code>inline</code>, <code>inline-flex</code>, <code>inline-grid</code>, <code>table</code>, <code>flow-root</code> та <code>contents</code>.</p>
+            <hr class="sep">
+            <p class="line" onclick="markActive(this)">Тепер перемикаюсь у редакторі на вкладку <code>activities.html</code> — це друга сторінка, «Напрями діяльності».</p>
+            <p class="line" onclick="markActive(this)">Спочатку продемонструю CSS-код анімації на рядках з тридцять третього по тридцять сьомий.<br>У правилі <code>.directions img:focus</code> на тридцять третьому рядку при отриманні фокуса зображенням встановлюється помаранчевий контур <code>outline: 3px solid darkorange</code> та запускається анімація <code>animation: saturate 1s forwards</code>, де <code>saturate</code> — це ім’я ключових кадрів, <code>1s</code> — тривалість одна секунда, а <code>forwards</code> зберігає фінальний стан після завершення.<br>Нижче на рядках тридцять чотири–тридцять сім директива <code>@keyframes saturate</code> задає початковий кадр <code>from</code> із фільтром <code>filter: saturate(100%)</code> і кінцевий кадр <code>to</code> зі значенням <code>filter: saturate(200%)</code>, що подвоює насиченість кольорів фотографії.</p>
+            <p class="line" onclick="markActive(this)">Далі прокоментую CSS-код Grid-контейнера <code>.directions</code> на рядках з тринадцятого по двадцятий та внесу три зміни.<br>Тут <code>display: grid</code> вмикає сітку;<br><code>grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr))</code> автоматично створює стільки колонок шириною від шістнадцяти <code>rem</code>, скільки вміщується в екран, і рівномірно їх розтягує;<br><code>grid-auto-rows: auto</code> задає автоматичну висоту рядків;<br><code>gap: 1.5rem</code> задає відступи між картками.</p>
+            <p class="line" onclick="markActive(this)">Тепер внесу три зміни у Grid-контейнер <code>.directions</code> на рядках п’ятнадцять–сімнадцять:<br>перша — замінюю автоматичні колонки на дві фіксовані колонки <code>repeat(2, 1fr)</code>;<br>друга — змінюю <code>grid-auto-rows</code> на <code>minmax(22rem, auto)</code>;<br>третя — збільшую <code>gap</code> до <code>2.5rem</code>:</p>
+            <div class="code-wrap"><button class="copy-btn" onclick="copyCode(this)">Копіювати в буфер</button><pre>            grid-template-columns: repeat(2, 1fr);
             grid-auto-rows: minmax(22rem, auto);
-            gap: 2.5rem;</pre>
-                </div>
-            </div>
-            <div class="say">
-                <span class="say-label">🗣️ Диктувати в ухо</span>
-                <p>Внесу три зміни у Grid-контейнер. <span class="slash">/</span> Перша — задаю фіксовані дві рівні колонки через <code>repeat(2, 1fr)</code>. <span class="slash">/</span> Друга — змінюю <code>grid-auto-rows</code> на <code>minmax(22rem, auto)</code>, збільшуючи мінімальну висоту рядка. <span class="slash">/</span> Третя — збільшую <code>gap</code> із півтора до <code>2.5rem</code>. <span class="slash">/</span> Зберігаю і показую результат у браузері: картки вишикувались у два стовпці з більшим інтервалом.</p>
-            </div>
-            <div class="act">
-                <strong>[ДІЯ]</strong> Перемикаєшся у браузер на <code>activities.html</code>, оновлюєш сторінку, показуєш результат. Потім повертаєшся у VS Code.
-            </div>
-        </section>
-
-        <section class="card" data-step="s44-3">
-            <div class="card-head">
-                <div>
-                    <span class="req-tag">Пункт 4.4.3</span>
-                    <h2>Grid-елемент (.directions &gt; li) + 3 зміни в код і показ</h2>
-                </div>
-                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
-            </div>
-            <div class="act">
-                <strong>[ДІЯ]</strong> Курсор на рядках 21–31 у <code>lab2/activities.html</code>.
-            </div>
-            <div class="say">
-                <span class="say-label">🗣️ Диктувати в ухо</span>
-                <p>На рядках з двадцять першого по тридцять перший стилізовано Grid-елемент <code>.directions &gt; li</code>. <span class="slash">/</span> Тут елемент сам є вкладеним грідом для свого вмісту (чотири рядки <code>auto auto 1fr auto</code> з <code>align-content: start</code>), <span class="slash">/</span> а як елемент зовнішньої сітки він має властивості <code>align-self: stretch</code> і <code>justify-self: stretch</code> — <span class="slash">/</span> тобто розтягується на всю ширину й висоту своєї комірки.</p>
-            </div>
-            <div class="act">
-                <strong>[ДІЯ — 3 ЗМІНИ В GRID-ЕЛЕМЕНТІ]</strong> У правилі <code>.directions &gt; li</code> змінюєш <code>align-self</code>, <code>justify-self</code> і додаєш <code>order</code> (або для наочності робиш ще правило <code>.directions &gt; li:first-child { grid-column: 1 / -1; }</code>):
-                <div class="code-wrap">
-                    <button class="copy-btn" onclick="copyCode(this)">Копіювати</button>
-                    <pre>            align-self: center;
+            gap: 2.5rem;</pre></div>
+            <p class="line" onclick="markActive(this)">Натискаю <code>Cmd+S</code>, перемикаюсь у браузер на сторінку «Напрями діяльності» і оновлюю її — бачимо, що картки перебудувалися у дві колонки зі збільшеними проміжками. Повертаюсь у редактор коду.</p>
+            <p class="line" onclick="markActive(this)">Тепер прокоментую CSS-код Grid-елемента <code>.directions &gt; li</code> на рядках з двадцять першого по тридцять перший та внесу три зміни.<br>Кожна картка <code>li</code> є елементом зовнішньої сітки і водночас вкладеним Grid-контейнером для своїх чотирьох внутрішніх елементів (<code>grid-template-rows: auto auto 1fr auto</code> та <code>align-content: start</code>).<br>Як Grid-елемент зовнішньої сітки, картка на двадцять п’ятому і двадцять шостому рядках має властивості <code>align-self: stretch</code> та <code>justify-self: stretch</code>, завдяки яким розтягується на всю висоту і ширину своєї комірки.</p>
+            <p class="line" onclick="markActive(this)">Внесу три зміни у властивості Grid-елемента на рядках двадцять п’ять і двадцять шість:<br>перша — змінюю <code>align-self: stretch</code> на <code>align-self: start</code>;<br>друга — змінюю <code>justify-self: stretch</code> на <code>justify-self: center</code>;<br>третя — додаю властивість порядку <code>order: 1</code>:</p>
+            <div class="code-wrap"><button class="copy-btn" onclick="copyCode(this)">Копіювати в буфер</button><pre>            align-self: start;
             justify-self: center;
-            grid-column: span 1;</pre>
-                </div>
-                Краще для миттєвого візуального ефекту замінити рядки 25–26 і додати рядок так:
-                <div class="code-wrap">
-                    <button class="copy-btn" onclick="copyCode(this)">Копіювати</button>
-                    <pre>            align-self: start;
-            justify-self: center;
-            order: 1;</pre>
-                </div>
-            </div>
-            <div class="say">
-                <span class="say-label">🗣️ Диктувати в ухо</span>
-                <p>Внесу три зміни у властивості Grid-елемента. <span class="slash">/</span> Перша — змінюю <code>align-self: stretch</code> на <code>align-self: start</code>, щоб картка не розтягувалася по висоті комірки, а притискалася догори. <span class="slash">/</span> Друга — змінюю <code>justify-self: stretch</code> на <code>justify-self: center</code>. <span class="slash">/</span> Третя — додаю властивість <code>order: 1</code>, що керує порядком елемента в сітці. <span class="slash">/</span> Зберігаю і показую в браузері: висота карток тепер різна залежно від обсягу тексту.</p>
-            </div>
-            <div class="act">
-                <strong>[ДІЯ]</strong> Оновлюєш <code>activities.html</code> в браузері, показуєш зміну, повертаєшся у VS Code.
-            </div>
-        </section>
-
-        <div id="sec-4-5" class="section-divider">4.5. Сторінка «Зворотній зв’язок» — feedback.html</div>
-
-        <section class="card" data-step="s45-1">
-            <div class="card-head">
-                <div>
-                    <span class="req-tag">Пункт 4.5.1</span>
-                    <h2>Flex-контейнер (form) + 3 зміни в код і показ</h2>
-                </div>
-                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
-            </div>
-            <div class="act">
-                <strong>[ДІЯ]</strong> Перемикаєшся у VS Code на <code>lab2/feedback.html</code>, рядки 10–17.
-            </div>
-            <div class="say">
-                <span class="say-label">🗣️ Диктувати в ухо</span>
-                <p>Переходимо до третьої сторінки — <code>feedback.html</code>. <span class="slash">/</span> На рядках з десятого по сімнадцятий тег <code>form</code> описано як Flex-контейнер.</p>
-                <p><code>display: flex</code> вмикає флексбокс. <span class="slash">/</span> <code>flex-flow: row wrap</code> розташовує блоки в рядок із переносом на новий рядок, коли не вистачає ширини. <span class="slash">/</span> <code>justify-content: space-between</code> розподіляє простір по головній осі між колонками. <span class="slash">/</span> <code>align-items: flex-start</code> і <code>align-content: flex-start</code> притискають елементи й рядки до верхнього краю. <span class="slash">/</span> <code>gap: 1rem</code> задає відступи між ними.</p>
-            </div>
-            <div class="act">
-                <strong>[ДІЯ — 3 ЗМІНИ У FLEX-КОНТЕЙНЕРІ]</strong> У правилі <code>form</code> (рядки 12–16) внось 3 зміни, зберігай (<code>Cmd+S</code>) і відкрий <code>feedback.html</code> в браузері:
-                <div class="code-wrap">
-                    <button class="copy-btn" onclick="copyCode(this)">Копіювати</button>
-                    <pre>            flex-flow: column nowrap;
+            order: 1;</pre></div>
+            <p class="line" onclick="markActive(this)">Зберігаю файл <code>Cmd+S</code>, оновлюю сторінку в браузері — бачимо, що картки більше не розтягуються до однакової висоти, а притискаються до верху своєї комірки. Повертаюсь у редактор і натискаю <code>Cmd+Z</code> та <code>Cmd+S</code>, щоб повернути початковий код.</p>
+            <hr class="sep">
+            <p class="line" onclick="markActive(this)">Тепер перемикаюсь у редакторі на вкладку <code>feedback.html</code> — це сторінка «Зворотній зв’язок».</p>
+            <p class="line" onclick="markActive(this)">Прокоментую CSS-код Flex-контейнера <code>form</code> на рядках з десятого по сімнадцятий та внесу три зміни.<br>На одинадцятому рядку <code>display: flex</code> робить форму гнучким контейнером.<br>На дванадцятому рядку скорочена властивість <code>flex-flow: row wrap</code> задає горизонтальний напрямок головної осі <code>row</code> та дозволяє перенос елементів на новий рядок <code>wrap</code>.<br>На тринадцятому рядку <code>justify-content: space-between</code> розносить блоки по краях головної осі.<br>На чотирнадцятому і п’ятнадцятому рядках <code>align-items: flex-start</code> та <code>align-content: flex-start</code> вирівнюють елементи й рядки по верхньому краю.<br>На шістнадцятому рядку <code>gap: 1rem</code> задає проміжки між блоками форми.</p>
+            <p class="line" onclick="markActive(this)">Внесу три зміни у Flex-контейнер <code>form</code>:<br>перша — змінюю <code>flex-flow</code> на <code>column nowrap</code>, щоб вишикувати блоки вертикально в одну колонку;<br>друга — змінюю <code>align-items</code> на <code>stretch</code>, щоб блоки розтягнулися на всю ширину;<br>третя — збільшую <code>gap</code> до <code>1.5rem</code>:</p>
+            <div class="code-wrap"><button class="copy-btn" onclick="copyCode(this)">Копіювати в буфер</button><pre>            flex-flow: column nowrap;
+            justify-content: space-between;
             align-items: stretch;
-            gap: 1.5rem;</pre>
-                </div>
-            </div>
-            <div class="say">
-                <span class="say-label">🗣️ Диктувати в ухо</span>
-                <p>Внесу три зміни у Flex-контейнер <code>form</code>. <span class="slash">/</span> Перша — змінюю <code>flex-flow</code> на <code>column nowrap</code>, перемикаючи головну вісь на вертикальну. <span class="slash">/</span> Друга — змінюю <code>align-items</code> на <code>stretch</code>, щоб усі блоки форми розтягнулись на всю ширину. <span class="slash">/</span> Третя — збільшую <code>gap</code> із одного до <code>1.5rem</code>. <span class="slash">/</span> Зберігаю і показую в браузері: форма тепер вишикувалась в одну колонку.</p>
-            </div>
-            <div class="act">
-                <strong>[ДІЯ]</strong> Показуєш <code>feedback.html</code> у браузері, потім у VS Code повертаєш <code>form</code> назад (<code>Cmd+Z</code> і <code>Cmd+S</code>), щоб було краще видно наступні зміни flex-елемента!
-            </div>
-        </section>
-
-        <section class="card" data-step="s45-2">
-            <div class="card-head">
-                <div>
-                    <span class="req-tag">Пункт 4.5.2</span>
-                    <h2>Flex-елемент (.buttons / fieldset) + 3 зміни в код і показ</h2>
-                </div>
-                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
-            </div>
-            <div class="act">
-                <strong>[ДІЯ]</strong> Курсор на рядках 19–23 у <code>lab2/feedback.html</code>.
-            </div>
-            <div class="say">
-                <span class="say-label">🗣️ Диктувати в ухо</span>
-                <p>Тепер розберемо Flex-елементи форми. <span class="slash">/</span> На дев’ятнадцятому рядку <code>fieldset</code> має скорочення <code>flex: 1 1 18rem</code> — коефіцієнт росту один, стиснення один, базова ширина вісімнадцять <code>rem</code>. <span class="slash">/</span> На двадцять першому рядку блок <code>.side</code> має <code>flex: 2 1 26rem</code>, тому росте вдвічі швидше. <span class="slash">/</span> На двадцять другому <code>.consent</code> має <code>order: 3</code> і <code>flex-basis: 100%</code>, щоб зайняти окремий рядок. <span class="slash">/</span> На двадцять третьому блок <code>.buttons</code> має <code>order: 4</code>, <code>align-self: flex-end</code>, <code>flex-shrink: 0</code> і <code>margin-left: auto</code>, що притискає кнопки праворуч.</p>
-            </div>
-            <div class="act">
-                <strong>[ДІЯ — 3 ЗМІНИ У FLEX-ЕЛЕМЕНТІ]</strong> У правилі <code>.buttons</code> (рядок 23) змінюєш 3 властивості, зберігаєш і оновлюєш <code>feedback.html</code> у браузері:
-                <div class="code-wrap">
-                    <button class="copy-btn" onclick="copyCode(this)">Копіювати</button>
-                    <pre>        .buttons { order: 0; align-self: center; flex-basis: 100%; margin-left: auto; display: flex; gap: .5rem; }</pre>
-                </div>
-            </div>
-            <div class="say">
-                <span class="say-label">🗣️ Диктувати в ухо</span>
-                <p>Внесу три зміни у Flex-елемент <code>.buttons</code>. <span class="slash">/</span> Перша — змінюю <code>order: 4</code> на <code>order: 0</code>, переміщуючи блок кнопок на початок форми. <span class="slash">/</span> Друга — змінюю <code>align-self: flex-end</code> на <code>center</code>. <span class="slash">/</span> Третя — замість <code>flex-shrink: 0</code> додаю <code>flex-basis: 100%</code>, щоб кнопки зайняли окремий повний рядок. <span class="slash">/</span> Зберігаю і показую в браузері: кнопки перемістились угору форми.</p>
-            </div>
-            <div class="act">
-                <strong>[ДІЯ]</strong> Показуєш результат у браузері та повертаєшся у VS Code / камеру.
-            </div>
-        </section>
-
-        <div id="sec-4-6" class="section-divider">4.6–4.7. Контрольні питання</div>
-
-        <section class="card" data-step="s46">
-            <div class="card-head">
-                <div>
-                    <span class="req-tag">Пункти 4.6 та 4.7</span>
-                    <h2>Пріоритети таблиці стилів; веб-дружні шрифти</h2>
-                </div>
-                <label class="check-label"><input type="checkbox" class="step-check"> Пройдено</label>
-            </div>
-            <div class="act">
-                <strong>[ДІЯ]</strong> Дивишся в камеру, відповідаєш чітко.
-            </div>
-            <div class="say">
-                <span class="say-label">🗣️ Диктувати в ухо — Питання 4.6: Пріоритети таблиці стилів</span>
-                <p>У CSS пріоритет визначається походженням стилів, специфічністю селектора та порядком підключення. <span class="slash">/</span> Від найвищого до найнижчого: <span class="slash">/</span> найвищий має директива <code>!important</code>, <span class="slash">/</span> далі йдуть вбудовані інлайнові стилі в атрибуті <code>style</code>, <span class="slash">/</span> потім селектори ідентифікаторів <code>#id</code>, <span class="slash">/</span> далі класи, атрибути та псевдокласи, <span class="slash">/</span> ще нижче — селектори тегів та псевдоелементи. <span class="slash">/</span> При однаковій специфічності перемагає правило, записане пізніше — тому внутрішня таблиця <code>&lt;style&gt;</code> у моєму коді перевизначає підключений раніше файл <code>style.css</code>.</p>
-                <p>Найнижчий пріоритет мають базові стилі браузера за замовчуванням, тобто <code>User-Agent stylesheet</code>, <span class="slash">/</span> а серед авторських стилів — універсальний селектор зірочка зі специфічністю нуль <span class="slash">/</span> та успадковані від батьківських тегів властивості.</p>
-            </div>
-            <div class="say">
-                <span class="say-label">🗣️ Диктувати в ухо — Питання 4.7: Веб-дружні шрифти</span>
-                <p>Веб-дружні, або <code>web-safe</code> шрифти — це шрифти, які за замовчуванням встановлені в більшості операційних систем, <span class="slash">/</span> таких як Windows, macOS та Linux, <span class="slash">/</span> тому коректно відображаються у браузері без завантаження із зовнішніх серверів. <span class="slash">/</span> Вони часто використовуються як резервні, якщо вебшрифт не завантажився. <span class="slash">/</span> Приклади з мого файлу <code>style.css</code> на сьомому і дванадцятому рядках: <code>Georgia</code> із родини <code>serif</code> та <code>Arial</code> із родини <code>sans-serif</code>; <span class="slash">/</span> також до них належать <code>Times New Roman</code>, <code>Verdana</code> і <code>Courier New</code>.</p>
-                <p>На цьому захист лабораторної роботи номер два завершено. <span class="slash">/</span> Дякую за увагу!</p>
-            </div>
-        </section>
+            align-content: flex-start;
+            gap: 1.5rem;</pre></div>
+            <p class="line" onclick="markActive(this)">Зберігаю файл <code>Cmd+S</code>, перемикаюсь у браузер на сторінку «Зворотній зв’язок» і оновлюю її — бачимо, що всі частини форми вишикувалися вертикально в одну колонку. Повертаюсь у редактор і скасовую цю зміну через <code>Cmd+Z</code> та <code>Cmd+S</code>, щоб продемонструвати роботу Flex-елементів у двоколонковому режимі.</p>
+            <p class="line" onclick="markActive(this)">Тепер прокоментую CSS-код Flex-елементів форми на рядках з дев’ятнадцятого по двадцять третій та внесу три зміни.<br>На дев’ятнадцятому рядку блок <code>fieldset</code> має властивість <code>flex: 1 1 18rem</code>, тобто коефіцієнт розтягування <code>flex-grow</code> дорівнює одиниці, стиснення <code>flex-shrink</code> — одиниці, а базова ширина <code>flex-basis</code> — вісімнадцять <code>rem</code>.<br>На двадцять першому рядку правий блок <code>.side</code> має <code>flex: 2 1 26rem</code> — він отримує вдвічі більше вільного простору.<br>На двадцять другому рядку блок згоди <code>.consent</code> має <code>order: 3</code> та <code>flex-basis: 100%</code>, щоб зайняти третю позицію і весь окремий рядок.<br>На двадцять третьому рядку блок кнопок <code>.buttons</code> має <code>order: 4</code>, <code>align-self: flex-end</code>, <code>flex-shrink: 0</code> та <code>margin-left: auto</code>.</p>
+            <p class="line" onclick="markActive(this)">Внесу три зміни у Flex-елемент <code>.buttons</code> на двадцять третьому рядку:<br>перша — змінюю <code>order: 4</code> на <code>order: 0</code>, щоб блок кнопок перемістився на самий початок форми;<br>друга — змінюю <code>align-self: flex-end</code> на <code>align-self: center</code>;<br>третя — замість <code>flex-shrink: 0</code> задаю <code>flex-basis: 100%</code>:</p>
+            <div class="code-wrap"><button class="copy-btn" onclick="copyCode(this)">Копіювати в буфер</button><pre>        .buttons { order: 0; align-self: center; flex-basis: 100%; margin-left: auto; display: flex; gap: .5rem; }</pre></div>
+            <p class="line" onclick="markActive(this)">Зберігаю файл <code>Cmd+S</code>, оновлюю сторінку в браузері — бачимо, що кнопки перемістилися на самий верх форми і зайняли окремий рядок. Повертаюсь у редактор, натискаю <code>Cmd+Z</code> і <code>Cmd+S</code>.</p>
+            <hr class="sep">
+            <p class="line" onclick="markActive(this)">На завершення дам відповіді на теоретичні питання пунктів чотири крапка шість і чотири крапка сім.</p>
+            <p class="line" onclick="markActive(this)">Які пріоритети таблиці стилів і що має найнижчий пріоритет?<br>Пріоритет застосування CSS-правил визначається каскадністю та специфічністю селекторів від найвищого до найнижчого:<br>найвищий пріоритет мають властивості з ключовим словом <code>!important</code>;<br>далі йдуть вбудовані інлайнові стилі, записані безпосередньо в HTML-атрибуті <code>style</code>;<br>далі за специфічністю йдуть селектори ідентифікаторів <code>#id</code>;<br>після них — селектори класів <code>.class</code>, атрибутів <code>[attr]</code> та псевдокласів <code>:hover</code>;<br>ще нижче — селектори тегів та псевдоелементів.<br>Якщо специфічність однакова, перемагає правило, яке розташоване нижче в коді — тому внутрішня таблиця <code>&lt;style&gt;</code> у моїх HTML-файлах має вищий пріоритет за підключений вище зовнішній файл <code>style.css</code>.<br>А найнижчий пріоритет мають базові таблиці стилів самого браузера за замовчуванням (<code>User-Agent stylesheet</code>), а серед авторських правил — універсальний селектор зірочка <code>*</code>, який має нульову специфічність, та успадковані від батьківського елемента властивості.</p>
+            <p class="line" onclick="markActive(this)">Що таке веб-дружні шрифти і наведіть приклад.<br>Веб-дружні, або <code>web-safe</code> шрифти — це загальнодоступні системні шрифти, які за замовчуванням встановлені на переважній більшості пристроїв та операційних систем (Windows, macOS, Linux, iOS, Android). Завдяки цьому браузер відображає їх миттєво без підвантаження з мережі, і їх обов’язково вказують у списку <code>font-family</code> як надійний резервний варіант на випадок, якщо зовнішній вебшрифт із Google Fonts не завантажиться.<br>Приклади веб-дружніх шрифтів із мого файлу <code>style.css</code> — це шрифт із засічками <code>Georgia</code> на сьомому рядку та шрифт без засічок <code>Arial</code> на дванадцятому рядку, а також до них належать <code>Times New Roman</code>, <code>Verdana</code>, <code>Tahoma</code> і моноширинний <code>Courier New</code>.</p>
+            <p class="line" onclick="markActive(this)">На цьому мій захист лабораторної роботи номер два завершено. Дякую за увагу!</p>
     </main>
-
     <script>
-        const STORAGE_KEY = 'lab2_defense_checks_v1';
-        const FONT_KEY = 'lab_defense_font_v1';
+        const FONT_KEY = "teleprompter_font_v2";
         const savedFont = localStorage.getItem(FONT_KEY);
-        if (savedFont) document.documentElement.style.setProperty('--font-size', savedFont + 'px');
+        if (savedFont) document.documentElement.style.setProperty("--font-size", savedFont + "px");
+
         function changeFont(delta) {
-            const current = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--font-size'), 10) || 18;
-            const next = Math.min(28, Math.max(13, current + delta));
-            document.documentElement.style.setProperty('--font-size', next + 'px');
+            const cur = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--font-size"), 10) || 24;
+            const next = Math.min(40, Math.max(16, cur + delta));
+            document.documentElement.style.setProperty("--font-size", next + "px");
             localStorage.setItem(FONT_KEY, String(next));
         }
-        const cards = Array.from(document.querySelectorAll('.card[data-step]'));
-        const savedChecks = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-        function updateProgress() {
-            const total = cards.length;
-            const done = cards.filter(c => c.querySelector('.step-check').checked).length;
-            document.getElementById('progress-text').textContent = `Пройдено ${done} з ${total} кроків`;
-            document.getElementById('progress-fill').style.width = `${Math.round((done / total) * 100)}%`;
-        }
-        cards.forEach(card => {
-            const key = card.dataset.step;
-            const cb = card.querySelector('.step-check');
-            if (savedChecks[key]) { cb.checked = true; card.classList.add('done'); }
-            cb.addEventListener('change', () => {
-                savedChecks[key] = cb.checked;
-                card.classList.toggle('done', cb.checked);
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(savedChecks));
-                updateProgress();
+
+        const allLines = Array.from(document.querySelectorAll(".line"));
+        function markActive(el) {
+            const idx = allLines.indexOf(el);
+            allLines.forEach((p, i) => {
+                p.classList.toggle("done", i < idx);
+                p.classList.toggle("current", i === idx);
             });
-        });
-        updateProgress();
-        function resetProgress() {
-            cards.forEach(card => { card.querySelector('.step-check').checked = false; card.classList.remove('done'); });
-            localStorage.removeItem(STORAGE_KEY);
-            updateProgress();
         }
-        let seconds = 0, interval = null;
-        const timerEl = document.getElementById('timer'), timerBtn = document.getElementById('timer-btn');
+
+        let scrolling = false, scrollRAF = null, lastTs = 0;
+        const scrollBtn = document.getElementById("scroll-btn");
+        const speedInput = document.getElementById("speed");
+
+        function stepScroll(ts) {
+            if (!scrolling) return;
+            if (lastTs) {
+                const dt = (ts - lastTs) / 1000;
+                const pxPerSec = Number(speedInput.value) * 14;
+                window.scrollBy(0, pxPerSec * dt);
+            }
+            lastTs = ts;
+            scrollRAF = requestAnimationFrame(stepScroll);
+        }
+
+        function toggleScroll() {
+            scrolling = !scrolling;
+            lastTs = 0;
+            scrollBtn.textContent = scrolling ? "⏸ Пауза" : "▶ Автоскрол";
+            scrollBtn.classList.toggle("running", scrolling);
+            if (scrolling) {
+                if (!timerInterval) toggleTimer();
+                scrollRAF = requestAnimationFrame(stepScroll);
+            } else if (scrollRAF) {
+                cancelAnimationFrame(scrollRAF);
+            }
+        }
+
+        document.addEventListener("keydown", e => {
+            if (e.code === "Space" && e.target.tagName !== "INPUT" && e.target.tagName !== "BUTTON") {
+                e.preventDefault();
+                toggleScroll();
+            }
+        });
+
+        let seconds = 0, timerInterval = null;
+        const timerEl = document.getElementById("timer");
         function renderTimer() {
-            const m = String(Math.floor(seconds / 60)).padStart(2, '0'), s = String(seconds % 60).padStart(2, '0');
-            timerEl.textContent = `${m}:${s} / 20:00`;
-            timerEl.classList.toggle('warn', seconds >= 15 * 60);
+            const m = String(Math.floor(seconds / 60)).padStart(2, "0");
+            const s = String(seconds % 60).padStart(2, "0");
+            timerEl.textContent = `⏱ ${m}:${s} / 20:00`;
         }
         function toggleTimer() {
-            if (interval) { clearInterval(interval); interval = null; timerBtn.textContent = 'Продовжити'; }
-            else { interval = setInterval(() => { seconds++; renderTimer(); }, 1000); timerBtn.textContent = 'Пауза'; }
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            } else {
+                timerInterval = setInterval(() => { seconds++; renderTimer(); }, 1000);
+            }
         }
-        function resetTimer() {
-            if (interval) { clearInterval(interval); interval = null; }
-            seconds = 0; timerBtn.textContent = 'Старт'; renderTimer();
+        function resetAll() {
+            if (scrolling) toggleScroll();
+            if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+            seconds = 0;
+            renderTimer();
+            allLines.forEach(p => p.classList.remove("done", "current"));
+            window.scrollTo({ top: 0, behavior: "smooth" });
         }
         function copyCode(btn) {
             navigator.clipboard.writeText(btn.nextElementSibling.textContent).then(() => {
-                const old = btn.textContent; btn.textContent = 'Скопійовано';
+                const old = btn.textContent;
+                btn.textContent = "Скопійовано!";
                 setTimeout(() => { btn.textContent = old; }, 1200);
             });
         }
