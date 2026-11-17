@@ -83,15 +83,49 @@ details p { margin: .65rem 0 0 1.25rem; }
 }
 @media (max-width: 710px) {
   .wrap { width: calc(100% - 2rem); }
-  .cover { padding-block: 1rem 2rem; }
+  .cover { padding-block: 1rem 1.65rem; }
   .topline { flex-wrap: wrap; gap: .3rem 1rem; }
   .brand { font-size: 1.16rem; flex-wrap: wrap; gap: .25rem .65rem; }
-  .intro { grid-template-columns: 1fr; padding-top: 2rem; }
-  .intro h1 { font-size: clamp(3.15rem, 10vw, 5rem); }
-  main { padding-block: 2rem 4rem; }
+  .intro { grid-template-columns: 1fr; padding-top: 1.6rem; }
+  .intro h1 { font-size: clamp(3rem, 10vw, 4.5rem); }
+  .intro-copy p { margin-top: 1rem; }
+  .intro-links { margin-top: 1.1rem; }
+  .cover-figure { display: none; }
+  main { padding-block: 1.65rem calc(5.25rem + env(safe-area-inset-bottom, 0px)); }
+  .section-nav {
+    position: fixed;
+    z-index: 2;
+    inset: auto 0 0;
+    padding: .4rem 1rem calc(.4rem + env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid var(--line);
+    background: var(--paper);
+  }
+  .section-nav .steps {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .35rem;
+    margin: 0;
+  }
+  .section-nav .steps a {
+    justify-content: center;
+    padding-inline: .25rem;
+    border-radius: .4rem;
+    font-size: .95rem;
+    text-align: center;
+  }
+  .steps a, .button {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  .button { display: inline-flex; }
+  #presentation, #live-demo { margin-top: 1.8rem; }
   .scene { grid-template-columns: 1fr; padding-block: 1.4rem 1.8rem; }
-  .scene-head { grid-template-columns: 1fr; gap: .25rem; }
+  .scene-head { grid-template-columns: 1fr; gap: .3rem; }
   .scenario-head { display: grid; gap: .8rem; }
   .duration { justify-self: start; }
+  .cue { font-size: 1rem; }
+  blockquote { font-size: 1.2rem; line-height: 1.55; padding-left: .8rem; }
+  .copy, summary { min-height: 44px; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
