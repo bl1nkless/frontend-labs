@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Сценарій захисту ReviewSense. Демонстрація того, як мережа кав’ярень помічає проблеми за відгуками й бере їх у роботу.">
+  <title>Захист ReviewSense — від відгуку до дії</title>
+  <link rel="icon" href="demo/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="defense.css">
+  <script src="defense.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#scenario">До сценарію</a>
+  <header class="cover">
+    <div class="wrap">
+      <div class="topline">
+        <div class="brand">ReviewSense <span>Захист STEM-проєкту</span></div>
+        <span class="author">Тарас Загорський · ІПЗ-31</span>
+      </div>
+      <div class="intro">
+        <div class="intro-copy">
+          <h1>Від відгуку<br>до дії</h1>
+          <p>ReviewSense допомагає керуючому побачити, <strong>де погіршується клієнтський досвід, що саме турбує гостей і який відгук узяти в роботу.</strong></p>
+          <div class="intro-links">
+            <a class="button button-primary" href="#scenario">Почати сценарій <span aria-hidden="true">↓</span></a>
+            <a class="button button-cover" href="demo/" target="reviewsense-demo">Відкрити демо <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+        <figure class="cover-figure">
+          <a href="media/dashboard.webp" target="reviewsense-preview" aria-label="Збільшити знімок дашборда">
+            <img src="media/dashboard.webp" width="1440" height="1000" alt="Огляд мережі ReviewSense зі сповіщенням про Позняки" fetchpriority="high">
+          </a>
+          <figcaption>Огляд мережі · демонстраційні дані</figcaption>
+        </figure>
+      </div>
+    </div>
+  </header>
+
+  <main id="scenario" class="wrap">
+    <div class="scenario-head">
+      <div>
+        <h2>Сценарій захисту</h2>
+        <p class="prep">До початку відкрий демо в сусідній вкладці. У блоці «Демо-облікові записи» вибери <strong>«Аналітик»</strong> і натисни <strong>«Увійти»</strong>. У кожному кроці кнопка відкриває потрібний екран у тій самій вкладці демо.</p>
+      </div>
+      <p class="duration">≈ 4 хвилини</p>
+    </div>
+    <nav aria-label="Кроки демонстрації">
+      <ol class="steps">
+        <li><a href="#opening">Проблема</a></li>
+        <li><a href="#analyzer">Один відгук</a></li>
+        <li><a href="#dashboard">Сигнал</a></li>
+        <li><a href="#location">Причина</a></li>
+        <li><a href="#reviews">Дія</a></li>
+        <li><a href="#closing">Висновок</a></li>
+      </ol>
+    </nav>
+
+    <section id="opening" class="scene scene-simple" aria-labelledby="opening-title">
+      <header class="scene-head">
+        <span class="time">0:00–0:35</span>
+        <h3 id="opening-title">Проблема керуючого</h3>
+      </header>
+      <div class="scene-copy">
+        <p class="cue"><strong>Покажи.</strong> Залиш на екрані огляд мережі. Почни з питання.</p>
+        <blockquote>«Уявіть, що ви керуєте мережею з дванадцяти кав’ярень. Одна з них має нормальну середню оцінку, але гості останнім часом частіше пишуть, що довго чекають на замовлення. Як дізнатися, де це відбувається і що перевірити сьогодні? Саме для цього я зробив ReviewSense. Зараз покажу шлях від фрази в одному відгуку до рішення керуючого».</blockquote>
+      </div>
+    </section>
+
+    <section id="analyzer" class="scene" aria-labelledby="analyzer-title">
+      <header class="scene-head">
+        <span class="time">0:35–1:20</span>
+        <h3 id="analyzer-title">Один відгук може містити і похвалу, і скаргу</h3>
+      </header>
+      <div class="scene-copy">
+        <p class="cue"><strong>Покажи.</strong> Відкрий «Аналізатор», встав приклад. Вкажи на аспекти «Продукт і меню» та «Швидкість», потім на внесок слів у таблиці під результатом.</p>
+        <div class="example">
+          <p id="example-text">Кава смачна, але замовлення готували дуже довго.</p>
+          <button class="copy" type="button" hidden>Копіювати відгук</button>
+          <span class="copy-status" role="status"></span>
+        </div>
+        <blockquote>«Тут людина хвалить каву й скаржиться на очікування. ReviewSense виділяє дві окремі теми: продукт отримує позитивну оцінку, швидкість — негативну. Можна побачити, чому загальний висновок негативний: “дуже” підсилює “довго”, а частина після “але” має більшу вагу. Тобто керуючий одразу бачить, що варто перевірити час видачі замовлень».</blockquote>
+        <a class="button button-outline" href="demo/#/analyzer" target="reviewsense-demo">Відкрити аналізатор <span aria-hidden="true">↗</span></a>
+      </div>
+      <figure>
+        <a href="media/analyzer.webp" target="reviewsense-preview" aria-label="Збільшити знімок аналізатора">
+          <img src="media/analyzer.webp" width="1440" height="1000" alt="Аналіз змішаного відгуку з позитивною оцінкою продукту і негативною оцінкою швидкості" loading="lazy">
+        </a>
+        <figcaption>Аналізатор розкладає оцінку за аспектами й показує внесок слів.</figcaption>
+      </figure>
+    </section>
+
+    <section id="dashboard" class="scene" aria-labelledby="dashboard-title">
+      <header class="scene-head">
+        <span class="time">1:20–2:00</span>
+        <h3 id="dashboard-title">Яку точку перевірити першою</h3>
+      </header>
+      <div class="scene-copy">
+        <p class="cue"><strong>Покажи.</strong> На «Огляді» знайди «Потребують уваги». Вкажи на частку негативу для Позняків і натисни «Деталі» у цьому сповіщенні.</p>
+        <blockquote>«Один відгук підказує, що могло піти не так. На рівні мережі мені треба зрозуміти, чи це повторюється. Огляд підсвічує точки зі сповіщеннями. Тут я бачу Позняки й одразу знаю, з якої кав’ярні почати перевірку. Для мене як керуючого це і є перше рішення: куди спрямувати увагу».</blockquote>
+        <a class="button button-outline" href="demo/#/dashboard" target="reviewsense-demo">Відкрити огляд <span aria-hidden="true">↗</span></a>
+      </div>
+      <figure>
+        <a href="media/dashboard.webp" target="reviewsense-preview" aria-label="Збільшити знімок огляду мережі">
+          <img src="media/dashboard.webp" width="1440" height="1000" alt="Панель показників і список точок, які потребують уваги" loading="lazy">
+        </a>
+        <figcaption>Сповіщення веде з огляду мережі до конкретної точки.</figcaption>
+      </figure>
+    </section>
+
+    <section id="location" class="scene" aria-labelledby="location-title">
+      <header class="scene-head">
+        <span class="time">2:00–2:45</span>
+        <h3 id="location-title">Що саме перевірити на Позняках</h3>
+      </header>
+      <div class="scene-copy">
+        <p class="cue"><strong>Покажи.</strong> Порівняй лінії «Точка» й «Мережа» та вкажи на «Швидкість» і «Персонал і сервіс» у блоці аспектів. Прокрути до «Останні негативні відгуки».</p>
+        <blockquote>«Тут я порівнюю динаміку Позняків з мережею. Далі дивлюся, про що саме пишуть гості. У демонстраційних даних є негатив про швидкість та обслуговування. Я відкриваю самі відгуки й перевіряю, що люди описують. Це дає мені гіпотезу для роботи з точкою: перевірити час від прийняття замовлення до видачі й обговорити результати з командою».</blockquote>
+        <a class="button button-outline" href="demo/#/locations/4" target="reviewsense-demo">Відкрити Позняки <span aria-hidden="true">↗</span></a>
+      </div>
+      <figure>
+        <a href="media/location.webp" target="reviewsense-preview" aria-label="Збільшити знімок сторінки Позняків">
+          <img src="media/location.webp" width="1440" height="1000" alt="Деталі точки Позняки з динамікою NSS і діаграмою аспектів" loading="lazy">
+        </a>
+        <figcaption>Деталі точки показують тренд, теми та вихідні відгуки.</figcaption>
+      </figure>
+    </section>
+
+    <section id="reviews" class="scene" aria-labelledby="reviews-title">
+      <header class="scene-head">
+        <span class="time">2:45–3:25</span>
+        <h3 id="reviews-title">Відкрити скаргу й узяти її в роботу</h3>
+      </header>
+      <div class="scene-copy">
+        <p class="cue"><strong>Покажи.</strong> Натисни «Усі негативні». Обери статус «Новий» і відкрий «Чекали замовлення майже 30 хвилин» або інший відгук про очікування. Натисни «У роботі» та покажи новий статус у діалозі.</p>
+        <blockquote>«Я бачу оригінальний текст скарги й можу перевірити, як система її оцінила. Переводжу відгук у статус “У роботі”. Тепер видно, що звернення вже взяли на опрацювання. У реальній роботі після перевірки й змін я повернувся б до огляду та подивився, чи стало менше скарг на швидкість у наступному періоді».</blockquote>
+        <a class="button button-outline" href="demo/#/reviews?location=4&amp;sentiment=negative&amp;status=new" target="reviewsense-demo">Відкрити нові скарги <span aria-hidden="true">↗</span></a>
+      </div>
+      <figure>
+        <a href="media/review.webp" target="reviewsense-preview" aria-label="Збільшити знімок діалогу відгуку">
+          <img src="media/review.webp" width="1440" height="1000" alt="Відкритий негативний відгук з підсвіченими словами й кнопкою «У роботі»" loading="lazy">
+        </a>
+        <figcaption>Діалог відгуку поєднує текст, пояснення оцінки та зміну статусу.</figcaption>
+      </figure>
+    </section>
+
+    <section id="closing" class="scene scene-simple" aria-labelledby="closing-title">
+      <header class="scene-head">
+        <span class="time">3:25–4:00</span>
+        <h3 id="closing-title">Цінність для мережі</h3>
+      </header>
+      <div class="scene-copy">
+        <p class="cue"><strong>Покажи.</strong> Залиш відкритим відгук зі зміненим статусом.</p>
+        <blockquote>«Керуючий отримує відповіді на три запитання: де погіршився досвід гостей, що саме їх турбує і які звернення вже в роботі. У прототипі я показав цей процес на синтетичних відгуках, аналіз і зміна статусу працюють у браузері. У пілоті з реальними даними я б перевірив цінність просто: заміряв би, скільки часу минає від появи серії схожих скарг до того, як керуючий її помітив і взяв перше звернення в роботу».</blockquote>
+      </div>
+    </section>
+
+    <section class="questions" aria-labelledby="questions-title">
+      <h2 id="questions-title">Якщо запитають після показу</h2>
+      <details>
+        <summary>Що ReviewSense додає до середньої оцінки в зірках?</summary>
+        <p>Зірки показують загальне враження. ReviewSense показує, про що саме пишуть гості, де ця тема повторюється і як змінюється частка негативних відгуків. Керуючий може відкрити першоджерело й вирішити, що перевірити.</p>
+      </details>
+      <details>
+        <summary>Що означає NSS і як виникає сповіщення?</summary>
+        <p>NSS — різниця між кількістю позитивних і негативних відгуків, поділена на загальну кількість і помножена на 100. Сповіщення про високу частку негативу залежить від заданого порога й обсягу відгуків. Для сповіщення про падіння NSS система також перевіряє, чи істотно виросла частка негативу в порівнянні двох 14-денних періодів.</p>
+      </details>
+      <details>
+        <summary>Як перевірено аналіз українського тексту?</summary>
+        <p>На екрані «Якість моделі» я порівнюю прогноз із заздалегідь заданою міткою синтетичного відгуку. Матриця показує, які класи плутаються, а окремі конфігурації дають порівняти внесок правил. Для висновку про точність на реальних відгуках потрібна незалежна розмічена вибірка.</p>
+        <p><a href="demo/#/quality" target="reviewsense-demo">Відкрити «Якість моделі» ↗</a></p>
+      </details>
+      <details>
+        <summary>Звідки беруться відгуки в демонстрації?</summary>
+        <p>Дашборд будується з синтетичного набору для 12 точок. Назви каналів — частина демонстраційних даних. В аналізатор можна вставити реальний текст або відкрити локальний CSV чи TXT, де кожен відгук записано окремим рядком.</p>
+      </details>
+      <details>
+        <summary>Як відповісти на зауваження до звіту?</summary>
+        <p>«Дякую, я уточню оформлення. Скажіть, будь ласка, який саме розділ потребує доопрацювання?» Якщо просять пояснити результат роботи, покажи пару «сигнал на дашборді → відгук у роботі» й коротко скажи, для якого рішення керуючого це потрібно.</p>
+      </details>
+    </section>
+  </main>
+</body>
+</html>
