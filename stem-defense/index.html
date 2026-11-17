@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Сценарій захисту ReviewSense. Демонстрація того, як мережа кав’ярень помічає проблеми за відгуками й бере їх у роботу.">
+  <meta name="description" content="Сценарій захисту ReviewSense з репліками до восьми слайдів і планом живої демонстрації.">
   <title>Захист ReviewSense — від відгуку до дії</title>
   <link rel="icon" href="demo/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,13 +43,142 @@
     <div class="scenario-head">
       <div>
         <h2>Сценарій захисту</h2>
-        <p class="prep">До початку відкрий демо в сусідній вкладці. У блоці «Демо-облікові записи» вибери <strong>«Аналітик»</strong> і натисни <strong>«Увійти»</strong>. У кожному кроці кнопка відкриває потрібний екран у тій самій вкладці демо.</p>
+        <p class="prep">До початку відкрий PowerPoint і демо в сусідній вкладці. У демо вибери акаунт <strong>«Аналітик»</strong> і натисни <strong>«Увійти»</strong>. Після восьмого слайда перемкни показ екрана на вкладку з ReviewSense.</p>
+      </div>
+      <p class="duration">≈ 7–8 хвилин</p>
+    </div>
+    <nav aria-label="Частини захисту">
+      <ol class="steps">
+        <li><a href="#presentation">Презентація</a></li>
+        <li><a href="#live-demo">Живе демо</a></li>
+        <li><a href="#questions-title">Запитання викладачки</a></li>
+      </ol>
+    </nav>
+
+    <section id="presentation" aria-labelledby="presentation-title">
+      <div class="scenario-head">
+        <div>
+          <h2 id="presentation-title">Презентація</h2>
+          <p class="prep">Показуй слайди по черзі. Під кожним заголовком є готова репліка та підказка, на чому зосередити увагу.</p>
+        </div>
+        <p class="duration">≈ 3–4 хвилини</p>
+      </div>
+      <nav aria-label="Слайди презентації">
+        <ol class="steps">
+          <li><a href="#slide-1">1. Проблема</a></li>
+          <li><a href="#slide-2">2. Ролі</a></li>
+          <li><a href="#slide-3">3. Екрани</a></li>
+          <li><a href="#slide-4">4. Стек</a></li>
+          <li><a href="#slide-5">5. Архітектура</a></li>
+          <li><a href="#slide-6">6. Компоненти</a></li>
+          <li><a href="#slide-7">7. Якість</a></li>
+          <li><a href="#slide-8">8. Результат</a></li>
+        </ol>
+      </nav>
+
+      <section id="slide-1" class="scene scene-simple" aria-labelledby="slide-1-title">
+        <header class="scene-head">
+          <span class="time">Слайд 1</span>
+          <h3 id="slide-1-title">Де в мережі погіршується обслуговування гостей?</h3>
+        </header>
+        <div class="scene-copy">
+          <p class="cue"><strong>Покажи.</strong> Почни з проблеми керуючого й назви три аудиторії унизу слайда.</p>
+          <blockquote>«Я зробив фронтенд ReviewSense для мережі кав’ярень. Уявімо, що загальна оцінка мережі хороша, але в одній кав’ярні гості вже кілька разів поскаржилися на довге очікування. Керуючому треба зрозуміти, де це відбувається. Аналітик порівнює точки, а адміністратор налаштовує, коли система має підсвітити проблему».</blockquote>
+        </div>
+      </section>
+
+      <section id="slide-2" class="scene scene-simple" aria-labelledby="slide-2-title">
+        <header class="scene-head">
+          <span class="time">Слайд 2</span>
+          <h3 id="slide-2-title">Ролі, реалізовані у фронтенді</h3>
+        </header>
+        <div class="scene-copy">
+          <p class="cue"><strong>Покажи.</strong> У таблиці вкажи на різницю між однією точкою та всією мережею.</p>
+          <blockquote>«У фронтенді працюють три демо-профілі. Андрій Ткачук керує Позняками й бачить лише цю кав’ярню. Аналітикиня Марина Петренко бачить усі 12 точок і може перевіряти якість аналізу. Адміністратор Олександр Коваль має також доступ до налаштувань. Активну роль видно біля профілю. Для живого показу я увійшов як аналітик».</blockquote>
+        </div>
+      </section>
+
+      <section id="slide-3" class="scene scene-simple" aria-labelledby="slide-3-title">
+        <header class="scene-head">
+          <span class="time">Слайд 3</span>
+          <h3 id="slide-3-title">Екрани та дії користувачів</h3>
+        </header>
+        <div class="scene-copy">
+          <p class="cue"><strong>Покажи.</strong> Виділи «Огляд і точки», «Відгуки» та адміністративні «Налаштування».</p>
+          <blockquote>«Огляд і сторінка точки показують динаміку й сповіщення. У відгуках можна знайти звернення, прочитати текст, змінити статус і експортувати вибірку. Аналізатор доступний усім після входу. Адміністратор керує порогами сповіщень і словником. Довідник кав’ярень задається в коді, а фронтенд показує доступні точки».</blockquote>
+        </div>
+      </section>
+
+      <section id="slide-4" class="scene scene-simple" aria-labelledby="slide-4-title">
+        <header class="scene-head">
+          <span class="time">Слайд 4</span>
+          <h3 id="slide-4-title">Технологічний стек</h3>
+        </header>
+        <div class="scene-copy">
+          <p class="cue"><strong>Покажи.</strong> Поясни призначення технологій на прикладах із проєкту.</p>
+          <blockquote>«React дав повторно використовувані картки, діалоги й бейджі, а також спільний стан для екранів. TypeScript описує структуру відгуку, статуси та дозволи. Zod перевіряє введені дані у формі входу й у словнику. Vite збирає застосунок для GitHub Pages. CSS відповідає за адаптивність і теми, SVG — за діаграми, а react-icons — за піктограми».</blockquote>
+        </div>
+      </section>
+
+      <section id="slide-5" class="scene scene-simple" aria-labelledby="slide-5-title">
+        <header class="scene-head">
+          <span class="time">Слайд 5</span>
+          <h3 id="slide-5-title">Архітектура клієнтського застосунку</h3>
+        </header>
+        <div class="scene-copy">
+          <p class="cue"><strong>Покажи.</strong> Пройди блоки згори вниз. Праворуч вкажи, де зберігаються сесія та статуси.</p>
+          <blockquote>«Це односторінковий React-застосунок. Модуль входу визначає роль, а маршрутизатор відкриває дозволений екран. Модуль даних генерує демонстраційні відгуки, запускає аналіз і обмежує вибірку для керуючого. Основна складність у тому, що браузер також класифікує тексти й рахує аналітику. Сесія зберігається в sessionStorage, а статуси та налаштування — у localStorage».</blockquote>
+        </div>
+      </section>
+
+      <section id="slide-6" class="scene scene-simple" aria-labelledby="slide-6-title">
+        <header class="scene-head">
+          <span class="time">Слайд 6</span>
+          <h3 id="slide-6-title">Компоненти ReviewSense</h3>
+        </header>
+        <div class="scene-copy">
+          <p class="cue"><strong>Покажи.</strong> Назви загальну кількість і поясни, що саме порахував.</p>
+          <blockquote>«Я нарахував 41 власний React-компонент. З них 10 — екрани, включно зі станами 403 і 404. Ще 22 відповідають за інтерфейс: наприклад, картки, діалоги, графіки й підсвічування слів. Дев’ять службових компонентів забезпечують маршрутизацію, контекст і перевірку доступу. Спільний CSS задає кольори та теми, а повторно використовувані компоненти забезпечують однаковий вигляд екранів».</blockquote>
+        </div>
+      </section>
+
+      <section id="slide-7" class="scene scene-simple" aria-labelledby="slide-7-title">
+        <header class="scene-head">
+          <span class="time">Слайд 7</span>
+          <h3 id="slide-7-title">Навіщо потрібна «Якість моделі»</h3>
+        </header>
+        <div class="scene-copy">
+          <p class="cue"><strong>Покажи.</strong> Вкажи на 581 із 687 і поясни, чому це важливо аналітику.</p>
+          <blockquote>«На синтетичній вибірці аналізатор правильно визначив 581 із 687 негативних відгуків. Решта отримали іншу мітку й могли б не потрапити у фільтр негативу. Аналітик бачить, де система помиляється, і може порівняти, як різні правила впливають на результат».</blockquote>
+        </div>
+      </section>
+
+      <section id="slide-8" class="scene scene-simple" aria-labelledby="slide-8-title">
+        <header class="scene-head">
+          <span class="time">Слайд 8</span>
+          <h3 id="slide-8-title">Що керуючий отримує після роботи в системі?</h3>
+        </header>
+        <div class="scene-copy">
+          <p class="cue"><strong>Покажи.</strong> Назви точку, причину та статус. Потім перемкни показ екрана на демо.</p>
+          <blockquote>«Після роботи в ReviewSense керуючий розуміє, з якої точки почати і що перевірити. У нашому прикладі це Позняки й довге очікування. Керуючий бере конкретну скаргу в роботу, а застосунок зберігає статус. Зараз покажу, як це виглядає від аналізу одного відгуку до зафіксованої дії».</blockquote>
+          <div class="intro-links">
+            <a class="button button-primary" href="#live-demo">До сценарію демо <span aria-hidden="true">↓</span></a>
+            <a class="button button-outline" href="demo/" target="reviewsense-demo">Відкрити ReviewSense <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <div id="live-demo" class="scenario-head">
+      <div>
+        <h2>Живе демо</h2>
+        <p class="prep">Показуй браузер із ReviewSense. Кнопки нижче відкривають потрібні екрани в тій самій вкладці демо.</p>
       </div>
       <p class="duration">≈ 4 хвилини</p>
     </div>
     <nav aria-label="Кроки демонстрації">
       <ol class="steps">
-        <li><a href="#opening">Проблема</a></li>
+        <li><a href="#opening">Початок</a></li>
         <li><a href="#analyzer">Один відгук</a></li>
         <li><a href="#dashboard">Сигнал</a></li>
         <li><a href="#location">Причина</a></li>
@@ -60,18 +189,18 @@
 
     <section id="opening" class="scene scene-simple" aria-labelledby="opening-title">
       <header class="scene-head">
-        <span class="time">0:00–0:35</span>
-        <h3 id="opening-title">Проблема керуючого</h3>
+        <span class="time">0:00–0:20</span>
+        <h3 id="opening-title">Початок показу</h3>
       </header>
       <div class="scene-copy">
-        <p class="cue"><strong>Покажи.</strong> Залиш на екрані огляд мережі. Почни з питання.</p>
-        <blockquote>«Уявіть, що ви керуєте мережею з дванадцяти кав’ярень. Одна з них має нормальну середню оцінку, але гості останнім часом частіше пишуть, що довго чекають на замовлення. Як дізнатися, де це відбувається і що перевірити сьогодні? Саме для цього я зробив ReviewSense. Зараз покажу шлях від фрази в одному відгуку до рішення керуючого».</blockquote>
+        <p class="cue"><strong>Покажи.</strong> В огляді вкажи на роль «Аналітик» у верхній панелі. Відкрий «Аналізатор».</p>
+        <blockquote>«Я увійшов як аналітик, тому можу бачити всі точки мережі. Почну з відгуку, в якому гість одночасно хвалить каву і скаржиться на очікування».</blockquote>
       </div>
     </section>
 
     <section id="analyzer" class="scene" aria-labelledby="analyzer-title">
       <header class="scene-head">
-        <span class="time">0:35–1:20</span>
+        <span class="time">0:20–1:20</span>
         <h3 id="analyzer-title">Один відгук може містити і похвалу, і скаргу</h3>
       </header>
       <div class="scene-copy">
